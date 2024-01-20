@@ -167,46 +167,28 @@ public class TTRoadRed extends LinearOpMode{
                 telemetry.addData("Block", blocks[i].toString());// this gives you the data
                 telemetry.addData("location?", blocks[i].x);// this gives you just x
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
-                //----------------------------3----------------------------\\
-                if (blocks[i].x > 210) {
+
+                //----------------------------1----------------------------\\
+                if (blocks[i].x < 100) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .waitSeconds(.5)
                                     .waitSeconds(.5)
-                                    .setTangent(180)
-                                    .splineTo(new Vector2d(26,-30.5),2*Math.PI/3)//drive to spike mark
+                                    .strafeTo(new Vector2d(42,-40.5))
                                     .waitSeconds(.5)
                                     .waitSeconds(.5)
-                                    .lineToYLinearHeading(-36,2*Math.PI/3)//back up
+                                    .strafeTo(new Vector2d(54,-27))
                                     .waitSeconds(.5)
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(7.5, -47),Math.toRadians(270))//line up with white stack
+                                    .splineTo(new Vector2d(7.5, -45),Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.5)
                                     .lineToYConstantHeading(-51.5)//forward into white
                                     .waitSeconds(.5)
                                     .waitSeconds(.5)
-                                    .lineToY(-40)
-                                    .strafeTo(new Vector2d(8,-40))//line up to go back
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(53)//drive to backboard
-                                    .strafeTo(new Vector2d(26.5,53))//strafe to score
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftInHere())
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(59.5)//back all the way up
-                                    .waitSeconds(.75)
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(42,59))
-                                    .waitSeconds(.5)
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(57)
-                                    .stopAndAdd(liftIn())
                                     .build());
                     sleep(400000);
-
-
-
                 }
+                
                 //----------------------------2----------------------------\\
                 if (blocks[i].x > 100 && blocks[i].x < 200) {
                     Actions.runBlocking(
@@ -230,27 +212,20 @@ public class TTRoadRed extends LinearOpMode{
                                     .build());
                     sleep(400000);
                 }
-
-                //----------------------------1----------------------------\\
-                if (blocks[i].x < 100) {
+                //----------------------------3----------------------------\\
+                if (blocks[i].x > 210) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .waitSeconds(.5)
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(42,-40.5))
-                                    .waitSeconds(.5)
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(54,-27))
-                                    .waitSeconds(.5)
-                                    // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(7.5, -45),Math.toRadians(270))//line up with white stack
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(-51.5)//forward into white
-                                    .waitSeconds(.5)
-                                    .waitSeconds(.5)
+                                    .setTangent(180)
+                                    .splineTo(new Vector2d(26,-30.5),2*Math.PI/3)//drive to spike mark
+                                    .lineToY(-36)//back up
                                     .build());
                     sleep(400000);
+
+
+
                 }
+                
 
             }
         }
@@ -325,6 +300,46 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawleft.setPosition(OpenLeft);
+                return false;
+            }
+        };
+    }
+    public Action closeR(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawright.setPosition(ClosedRight);
+                return false;
+            }
+        };
+    }
+
+    public Action closeL(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawleft.setPosition(ClosedLeft);
+                return false;
+            }
+        };
+    }
+    public Action scoringPos(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                armROT.setPosition(ScoringArm);
+                clawrotate.setPosition(ScoringClaw);
+                return false;
+            }
+        };
+    }
+
+    public Action groundPos(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                armROT.setPosition(GroundArm);
+                clawrotate.setPosition(GroundClaw);
                 return false;
             }
         };

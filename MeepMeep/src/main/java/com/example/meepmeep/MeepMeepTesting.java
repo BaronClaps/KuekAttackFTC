@@ -3,6 +3,7 @@ package com.example.meepmeep;
 import static java.lang.Math.PI;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
@@ -18,7 +19,31 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(12, 61, PI *3/2))
-                .lineToY(50)
+
+                 .strafeTo((new Vector2d(23,43)))
+/*               .waitSeconds(.5)
+                 .stopAndAdd(liftExtend2())
+                 .waitSeconds(.5)
+                 .stopAndAdd(openL())
+                 .waitSeconds(.5)
+                 .stopAndAdd(liftIn2())
+                 .waitSeconds(.5)
+                 .stopAndAdd(closeL()) */
+                 .turn(PI/2)
+//               .stopAndAdd(ScoringPos())
+                 .lineToXConstantHeading(48)
+/*               .waitSeconds(.5)
+                 .stopAndAdd(liftExtend())
+                 .waitSeconds(.5)
+                 .stopAndAdd(openR())
+                 .waitSeconds(.5)
+                 .stopAndAdd(liftIn())
+                 .waitSeconds(.5)
+                 .stopAndAdd(closeR())
+                 .waitSeconds(.5) */
+                 .lineToXConstantHeading(40)
+                 .strafeToConstantHeading((new Vector2d(50,60)))
+
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
