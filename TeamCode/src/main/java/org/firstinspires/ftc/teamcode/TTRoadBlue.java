@@ -109,7 +109,7 @@ public class TTRoadBlue extends LinearOpMode{
 
 
     @Override public void runOpMode() {
-        Pose2d beginPose = new Pose2d(60, 12, Math.toRadians(180));
+        Pose2d beginPose = new Pose2d(12,61 , Math.toRadians(180));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -174,17 +174,86 @@ public class TTRoadBlue extends LinearOpMode{
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .strafeTo((new Vector2d(23,43)))
-                                    .waitSeconds(.5)
                                     .stopAndAdd(liftExtend2())
                                     .waitSeconds(.5)
-                                .stopAndAdd(openL())
+                                    .stopAndAdd(openL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(liftIn2())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
+                                    .lineToYConstantHeading(50)
                                     .turn(PI/2)
                                     .stopAndAdd(scoringPos())
-                                    .lineToXConstantHeading(48)
+                                    .waitSeconds(1 ) //test this value
+                                    .strafeToConstantHeading(new Vector2d(47,36))
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(openR())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftIn())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(closeR())
+                                    .waitSeconds(.5)
+                                    .lineToXConstantHeading(36)
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(1)
+                                    .strafeToConstantHeading((new Vector2d(50,60)))
+
+                                    .build());
+                    sleep(400000);
+                }
+
+                //----------------------------2----------------------------\\
+                if (blocks[i].x > 100 && blocks[i].x < 190) {
+                    Actions.runBlocking(
+                            drive.actionBuilder(beginPose)
+                                    .lineToYConstantHeading(34)
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftExtend2())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftIn2())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(closeL())
+                                    .lineToYConstantHeading(40)
+                                    .turn(PI/2)
+                                    .stopAndAdd(scoringPos())
+                                    .strafeToConstantHeading(new Vector2d(48,44))
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(openR())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftIn())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(closeR())
+                                    .waitSeconds(.5)
+                                    .lineToXConstantHeading(40)
+                                    .strafeToConstantHeading((new Vector2d(50,60)))
+                                    .build());
+                    sleep(400000);
+                }
+
+                //----------------------------3----------------------------\\
+                if (blocks[i].x > 190) {
+                    Actions.runBlocking(
+                            drive.actionBuilder(beginPose)
+                                    .lineToYConstantHeading(40)
+                                    .turn(-1*PI/3)
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftExtend2())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftIn2())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(closeL())
+                                    .turn(PI/2+PI/3)
+                                    .stopAndAdd(scoringPos())
+                                    .strafeToConstantHeading(new Vector2d(48,30))
                                     .waitSeconds(.5)
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(.5)
@@ -197,23 +266,6 @@ public class TTRoadBlue extends LinearOpMode{
                                     .lineToXConstantHeading(40)
                                     .strafeToConstantHeading((new Vector2d(50,60)))
 
-                                    .build());
-                    sleep(400000);
-                }
-
-                //----------------------------2----------------------------\\
-                if (blocks[i].x > 100 && blocks[i].x < 200) {
-                    Actions.runBlocking(
-                            drive.actionBuilder(beginPose)
-                                    .build());
-                    sleep(400000);
-                }
-
-                //----------------------------3----------------------------\\
-                if (blocks[i].x > 210) {
-                    Actions.runBlocking(
-                            drive.actionBuilder(beginPose)
-                                    .stopAndAdd(liftIn2())
 
                                     .build());
                     sleep(400000);

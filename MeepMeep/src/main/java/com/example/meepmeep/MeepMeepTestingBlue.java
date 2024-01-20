@@ -9,7 +9,7 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 
-public class MeepMeepTesting {
+public class MeepMeepTestingBlue {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800,60);
 
@@ -19,31 +19,15 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(12, 61, PI *3/2))
+                .lineToYConstantHeading(40)
+                .turn(-1*PI/3)
 
-                 .strafeTo((new Vector2d(23,43)))
-/*               .waitSeconds(.5)
-                 .stopAndAdd(liftExtend2())
-                 .waitSeconds(.5)
-                 .stopAndAdd(openL())
-                 .waitSeconds(.5)
-                 .stopAndAdd(liftIn2())
-                 .waitSeconds(.5)
-                 .stopAndAdd(closeL()) */
-                 .turn(PI/2)
-//               .stopAndAdd(ScoringPos())
-                 .lineToXConstantHeading(48)
-/*               .waitSeconds(.5)
-                 .stopAndAdd(liftExtend())
-                 .waitSeconds(.5)
-                 .stopAndAdd(openR())
-                 .waitSeconds(.5)
-                 .stopAndAdd(liftIn())
-                 .waitSeconds(.5)
-                 .stopAndAdd(closeR())
-                 .waitSeconds(.5) */
-                 .lineToXConstantHeading(40)
-                 .strafeToConstantHeading((new Vector2d(50,60)))
+                .turn(PI/2+PI/3)
 
+                .strafeToConstantHeading(new Vector2d(48,30))
+
+                .lineToXConstantHeading(40)
+                .strafeToConstantHeading((new Vector2d(50,60)))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)

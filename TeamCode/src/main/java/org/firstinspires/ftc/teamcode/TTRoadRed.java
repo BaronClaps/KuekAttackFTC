@@ -28,6 +28,8 @@ package org.firstinspires.ftc.teamcode;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static java.lang.Math.PI;
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -216,9 +218,7 @@ public class TTRoadRed extends LinearOpMode{
                 if (blocks[i].x > 210) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .setTangent(180)
-                                    .splineTo(new Vector2d(26,-30.5),2*Math.PI/3)//drive to spike mark
-                                    .lineToY(-36)//back up
+
                                     .build());
                     sleep(400000);
 
