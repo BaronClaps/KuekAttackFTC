@@ -173,6 +173,7 @@ public class TTRoadBlue extends LinearOpMode{
                 if (blocks[i].x < 100) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
+                                    .setTangent(0)
                                     .strafeTo((new Vector2d(23,43)))
                                     .stopAndAdd(liftExtend2())
                                     .waitSeconds(.5)

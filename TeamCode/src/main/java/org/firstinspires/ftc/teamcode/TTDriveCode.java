@@ -60,16 +60,19 @@ public class TTDriveCode extends LinearOpMode {
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double ScoringClaw = 0.5;
+    double Scoring1Claw = 0.5;
+    double Scoring2Claw = 0.525;
+    double Scoring3Claw = 0.575;
     double Scoring3Arm = 0.18;
-    double Scoring2Arm;
-    double Scoring1Arm;
+    double Scoring2Arm = 0.17;
+    double Scoring1Arm = 0.16;
 
     double OpenLeft = 0.2;
     double OpenRight = 0;
     double GroundClaw = 0.425;
+
     double GroundArm = 0.0975;
-    int TapeLVL = 0;
+    int TapeLVL = 1;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -154,27 +157,28 @@ public class TTDriveCode extends LinearOpMode {
             }
 
             if (gamepad2.right_bumper){
-                if(TapeLVL == 0){
+                if(TapeLVL == 1){
                     armR = Scoring1Arm;
                 }
 
-                if(TapeLVL == 1){
+                if(TapeLVL == 2){
                     armR = Scoring2Arm;
                 }
 
-                if(TapeLVL == 2){
+                if(TapeLVL == 3){
                     armR = Scoring3Arm;
                 }
             }
             if (gamepad2.dpad_up){
-                TapeLVL += 1;
+                TapeLVL = 3;
+            }
+            if(gamepad2.dpad_right){
+                TapeLVL = 2;
             }
             if (gamepad2.dpad_down){
-                TapeLVL -= 1;
+                TapeLVL = 1;
             }
-            if (TapeLVL > 2){
-                TapeLVL = 0;
-            }
+
 
 
 
@@ -210,7 +214,15 @@ public class TTDriveCode extends LinearOpMode {
 
             if(gamepad2.y)
             {
-                clawrotate.setPosition(ScoringClaw);
+                if(TapeLVL == 1){
+                    clawrotate.setPosition(Scoring1Claw);
+                }
+                if(TapeLVL == 2){
+                    clawrotate.setPosition(Scoring2Claw);
+                }
+                if(TapeLVL == 3){
+                    clawrotate.setPosition(Scoring3Claw);
+                }
 
             }
 
@@ -229,15 +241,23 @@ public class TTDriveCode extends LinearOpMode {
             {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
-                clawrotate.setPosition(ScoringClaw);
-                sleep(100);
-                if(TapeLVL == 0){
-                    armR = Scoring1Arm;
-                }
                 if(TapeLVL == 1){
-                    armR = Scoring2Arm;
+                    clawrotate.setPosition(Scoring1Claw);
                 }
                 if(TapeLVL == 2){
+                    clawrotate.setPosition(Scoring2Claw);
+                }
+                if(TapeLVL == 3){
+                    clawrotate.setPosition(Scoring3Claw);
+                }
+                sleep(100);
+                if(TapeLVL == 1){
+                    armR = Scoring1Arm;
+                }
+                if(TapeLVL == 2){
+                    armR = Scoring2Arm;
+                }
+                if(TapeLVL == 3){
                     armR = Scoring3Arm;
                 }
 
