@@ -109,7 +109,7 @@ public class TTRoadBlue extends LinearOpMode{
 
 
     @Override public void runOpMode() {
-        Pose2d beginPose = new Pose2d(12,61 , Math.toRadians(180));
+        Pose2d beginPose = new Pose2d(-60,12, 0);
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -173,41 +173,34 @@ public class TTRoadBlue extends LinearOpMode{
                 if (blocks[i].x < 100) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
+                                    .waitSeconds(.5)
+                                    .waitSeconds(.5)
                                     .setTangent(0)
-                                    .strafeTo((new Vector2d(23,43)))
-                                    .stopAndAdd(liftExtend2())
+                                    .strafeTo(new Vector2d(-40,25))
                                     .waitSeconds(.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(liftIn2())
-                                    .waitSeconds(.5)
+                                    .lineToX(-50)
                                     .stopAndAdd(closeL())
-                                    .lineToYConstantHeading(50)
                                     .turn(PI/2)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(1 ) //test this value
-                                    .strafeToConstantHeading(new Vector2d(47,36))
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(1) //test this value
+                                    .strafeTo(new Vector2d(-38.5,57))
                                     .waitSeconds(.5)
                                     .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftIn())
+                                    .lineToY(36)
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeR())
                                     .waitSeconds(.5)
-                                    .lineToXConstantHeading(36)
-                                    .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(1)
-                                    .strafeToConstantHeading((new Vector2d(50,60)))
-
+                                    .strafeTo((new Vector2d(-60,50)))
                                     .build());
                     sleep(400000);
                 }
 
 
-                //----------------------------2----------------------------\\
+               /* //----------------------------2----------------------------\\
                 if (blocks[i].x > 100 && blocks[i].x < 190) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
@@ -276,7 +269,7 @@ public class TTRoadBlue extends LinearOpMode{
 
                 }
 
-
+*/
 
             }
         }
