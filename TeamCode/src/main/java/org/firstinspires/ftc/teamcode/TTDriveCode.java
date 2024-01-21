@@ -65,7 +65,8 @@ public class TTDriveCode extends LinearOpMode {
     double Scoring3Claw = 0.575;
     double Scoring3Arm = 0.18;
     double Scoring2Arm = 0.17;
-    double Scoring1Arm = 0.16;
+    double Scoring1Arm = 0.17;
+    double HangArm = 0.27;
 
     double OpenLeft = 0.2;
     double OpenRight = 0;
@@ -165,19 +166,24 @@ public class TTDriveCode extends LinearOpMode {
                     armR = Scoring2Arm;
                 }
 
-                if(TapeLVL == 3){
-                    armR = Scoring3Arm;
+                if(TapeLVL == 4){
+                    armR = HangArm;
                 }
             }
-            if (gamepad2.dpad_up){
-                TapeLVL = 3;
+            if (gamepad2.dpad_left){
+                armR = HangArm;
+            }
+            if(gamepad2.dpad_up){
+                arm.setPower(1);
+            } else if (gamepad2.dpad_down) {
+                arm.setPower(-1);
+            } else {
+                arm.setPower(0);
             }
             if(gamepad2.dpad_right){
-                TapeLVL = 2;
-            }
-            if (gamepad2.dpad_down){
                 TapeLVL = 1;
             }
+
 
 
 

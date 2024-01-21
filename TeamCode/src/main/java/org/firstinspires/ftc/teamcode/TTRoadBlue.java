@@ -176,12 +176,12 @@ public class TTRoadBlue extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .waitSeconds(.5)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(-40,25))
+                                    .strafeTo(new Vector2d(-40,27))
                                     .waitSeconds(.5)
-                                    .stopAndAdd(openL())
+                                    .stopAndAdd(openR())
                                     .waitSeconds(.5)
-                                    .lineToX(-50)
-                                    .stopAndAdd(closeL())
+                                    .lineToX(-48)
+                                    .stopAndAdd(closeR())
                                     .turn(PI/2)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(1) //test this value
@@ -194,40 +194,34 @@ public class TTRoadBlue extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(1)
-                                    .strafeTo((new Vector2d(-60,50)))
+                                    .strafeTo((new Vector2d(-50,60)))
                                     .build());
                     sleep(400000);
                 }
 
 
-               /* //----------------------------2----------------------------\\
+                //----------------------------2----------------------------\\
                 if (blocks[i].x > 100 && blocks[i].x < 190) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .lineToYConstantHeading(34)
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftExtend2())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(openL())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftIn2())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(closeL())
-                                    .lineToYConstantHeading(40)
-                                    .turn(PI/2)
-                                    .stopAndAdd(scoringPos())
-                                    .strafeToConstantHeading(new Vector2d(48,44))
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftExtend())
-                                    .waitSeconds(.5)
+                                    .setTangent(0)
+                                    .strafeTo(new Vector2d(-28,12))
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(liftIn())
-                                    .waitSeconds(.5)
+                                    .turn(PI/2)
                                     .stopAndAdd(closeR())
                                     .waitSeconds(.5)
-                                    .lineToXConstantHeading(40)
-                                    .strafeToConstantHeading((new Vector2d(50,60)))
+                                    .stopAndAdd(scoringPos())
+                                    .waitSeconds(0.5)
+                                    .strafeTo(new Vector2d(-37,57))
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.5)
+                                    .lineToY(42)
+                                    .stopAndAdd(closeL())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(0.5)
+                                    .strafeTo((new Vector2d(-50,60)))
                                     .build());
                     sleep(400000);
                 }
@@ -236,32 +230,25 @@ public class TTRoadBlue extends LinearOpMode{
                 if (blocks[i].x > 190) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .lineToYConstantHeading(40)
-                                    .turn(-1*PI/3)
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftExtend2())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(openL())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftIn2())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(closeL())
-                                    .turn(PI/2+PI/3)
-                                    .stopAndAdd(scoringPos())
-                                    .strafeToConstantHeading(new Vector2d(48,30))
-                                    .waitSeconds(.5)
+                                    .setTangent(0)
+                                    .lineToX(-30)
+                                    .turn(-1*PI/2)
+                                    .lineToY(0)
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(.5)
                                     .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftIn())
-                                    .waitSeconds(.5)
+                                    .lineToY(12)
                                     .stopAndAdd(closeR())
+                                    .turn(PI)
+                                    .stopAndAdd(scoringPos())
+                                    .strafeTo(new Vector2d(-30,37))
+                                    .stopAndAdd(openL())
+                                    .lineToY(24)
+                                    .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .lineToXConstantHeading(40)
-                                    .strafeToConstantHeading((new Vector2d(50,60)))
-
-
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(0.5)
+                                    .strafeTo((new Vector2d(-50,60)))
                                     .build());
                     sleep(400000);
 
@@ -269,7 +256,7 @@ public class TTRoadBlue extends LinearOpMode{
 
                 }
 
-*/
+
 
             }
         }
@@ -280,7 +267,7 @@ public class TTRoadBlue extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-700);
+                arm.setTargetPosition(-300);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
@@ -295,7 +282,7 @@ public class TTRoadBlue extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(700);
+                arm.setTargetPosition(300);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
@@ -308,7 +295,7 @@ public class TTRoadBlue extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-850);
+                arm.setTargetPosition(-500);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
@@ -320,7 +307,7 @@ public class TTRoadBlue extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-850);
+                arm.setTargetPosition(-500);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
