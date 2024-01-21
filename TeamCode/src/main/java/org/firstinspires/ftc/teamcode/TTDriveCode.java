@@ -260,7 +260,6 @@ public class TTDriveCode extends LinearOpMode {
                 if(TapeLVL == 3){
                     armR = Scoring3Arm;
                 }
-
             }
 
             //-----------Speed Control------------//
