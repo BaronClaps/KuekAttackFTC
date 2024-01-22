@@ -98,11 +98,11 @@ public class TTRoadRed extends LinearOpMode{
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double ScoringClaw = 0.515;
-    double ScoringArm = 0.16;
+    double ScoringClaw = 0.62;
+    double ScoringArm = 0.3;
     double OpenLeft = 0.2;
     double OpenRight = 0;
-    double GroundClaw = 0.425;
+    double GroundClaw = 0.025;
     double GroundArm = 0.0975;
     private HuskyLens huskyLens;
     //TODO add your other motors and sensors here
@@ -123,7 +123,10 @@ public class TTRoadRed extends LinearOpMode{
 
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
 
-
+        armR = GroundArm;
+        clawright.setPosition(ClosedRight);
+        clawleft.setPosition(ClosedLeft);
+        clawrotate.setPosition(GroundClaw);
 
         //TODO initialize the sensors and motors you added
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
@@ -175,31 +178,30 @@ public class TTRoadRed extends LinearOpMode{
                   //  clawright.setPosition(OpenRight);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .strafeTo(new Vector2d(36,36))
+                                    .strafeTo(new Vector2d(32,36))
                                     .turn(PI/2)
-                                    .strafeTo(new Vector2d(34,12))
-                                    //.stopAndAdd(openR())
+                                    .lineToYConstantHeading(16)
+                                    .stopAndAdd(openR())
                                     .waitSeconds(0.5)
                                     .lineToY(30)
-                                    //.stopAndAdd(closeR())
+                                    .stopAndAdd(closeR())
                                     .waitSeconds(0.5)
-                                    .turn(PI)
-                                   // .stopAndAdd(scoringPos())
+                                    .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(36,44))
-                                    //.stopAndAdd(liftExtend())
-                                    .waitSeconds(1)
-                                    //.stopAndAdd(openL())
+                                    .strafeTo(new Vector2d(22.5,53))
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToY(36)
-                                   // .stopAndAdd(liftIn())
-                                    .waitSeconds(1)
-                                    //.stopAndAdd(closeL())
+                                    .lineToY(45)
+                                    .stopAndAdd(liftIn())
                                     .waitSeconds(.5)
-                                    //.stopAndAdd(groundPos())
+                                    .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60,50)))
-
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(.5)
+                                    .strafeTo((new Vector2d(58,50)))
+                                    .lineToY(60)
                                     .build());
                     sleep(400000);
                 }
@@ -211,28 +213,29 @@ public class TTRoadRed extends LinearOpMode{
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(36,12))
+                                    .strafeTo(new Vector2d(35.5,15))
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(40)
-                                    .turn(-PI/2)
+                                    .turn(PI/2)
                                     .stopAndAdd(closeR())
                                     .waitSeconds(.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(32,44))
+                                    .strafeTo(new Vector2d(33,44))
                                     .stopAndAdd(liftExtend())
-                                    .waitSeconds(1)
+                                    .waitSeconds(0.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToY(36)
+                                    .lineToY(45)
                                     .stopAndAdd(liftIn())
-                                    .waitSeconds(1)
+                                    .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60,50)))
+                                    .strafeTo((new Vector2d(58,50)))
+                                    .lineToY(60)
                                     .build());
                     sleep(400000);
                 }
@@ -246,25 +249,29 @@ public class TTRoadRed extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .waitSeconds(.5)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(40,27))
+                                    .strafeTo(new Vector2d(39,26))
                                     .waitSeconds(.5)
-                                    ///.stopAndAdd(openR())
+                                    .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(48)
-                                    //.stopAndAdd(closeR())
-                                    .turn(-PI/2)
-                                   // .stopAndAdd(scoringPos())
+                                    .stopAndAdd(closeR())
+                                    .turn(PI/2)
+                                    .stopAndAdd(scoringPos())
                                     .waitSeconds(1) //test this value
-                                    .strafeTo(new Vector2d(38.5,57))
+                                    .strafeTo(new Vector2d(33,56))
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    //.stopAndAdd(openR())
-                                    .lineToY(40)
+                                    .lineToY(45)
+                                    .stopAndAdd(liftIn())
                                     .waitSeconds(.5)
-                                    //.stopAndAdd(closeR())
+                                    .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                   // .stopAndAdd(groundPos())
-                                    .waitSeconds(1)
-                                    .strafeTo((new Vector2d(60,55)))
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(.5)
+                                    .strafeTo((new Vector2d(52,50)))
+                                    .lineToY(60)
                                     .build());
                     sleep(400000);
 
@@ -282,7 +289,7 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-1500);
+                arm.setTargetPosition(-600);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(1);
                 return false;
@@ -297,7 +304,7 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(1500);
+                arm.setTargetPosition(600);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(1);
                 return false;

@@ -60,11 +60,10 @@ public class TTDriveCode extends LinearOpMode {
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double Scoring1Claw = 0.075;
-    double Scoring2Claw = 0.1;
-    double Scoring3Claw = 0.15;
+    double FrontScoreClaw = 0.075;
+
     double MidHangingArm = 0.255;
-    double Scoring1Arm = 0.17;
+    double FrontScoreArm = 0.17;
     double HangArm = 0.27;
     double BackScoreArm = 0.3;
 double BackScoreClaw = 0.62;
@@ -158,19 +157,24 @@ double BackScoreClaw = 0.62;
             }
 
             if (gamepad2.right_bumper){
-               armR = Scoring1Arm;
+               if (TapeLVL == 1){
+                   armR = FrontScoreArm;
+               }
+               if (TapeLVL == 2){
+                   armR = BackScoreArm;
+               }
             }
-            if (gamepad2.dpad_up){
+            if (gamepad2.dpad_down){
+                TapeLVL = 1;
+            }
+          /*  if (gamepad2.dpad_up){
                 armR = HangArm;
             }
             if(gamepad2.dpad_down){
                 armR = MidHangingArm;
-            }
-            if(gamepad2.dpad_left){
-                armR = BackScoreArm;
-                clawrotate.setPosition(BackScoreClaw);
-                clawleft.setPosition(ClosedLeft);
-                clawright.setPosition(ClosedRight);
+            } */
+            if(gamepad2.dpad_up){
+                TapeLVL = 2;
             }
 
 
@@ -212,14 +216,12 @@ double BackScoreClaw = 0.62;
             if(gamepad2.y)
             {
                 if(TapeLVL == 1){
-                    clawrotate.setPosition(Scoring1Claw);
+                    clawrotate.setPosition(FrontScoreClaw);
                 }
                 if(TapeLVL == 2){
-                    clawrotate.setPosition(Scoring2Claw);
+                    clawrotate.setPosition(BackScoreClaw);
                 }
-                if(TapeLVL == 3){
-                    clawrotate.setPosition(Scoring3Claw);
-                }
+
 
             }
 
@@ -239,17 +241,18 @@ double BackScoreClaw = 0.62;
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 if(TapeLVL == 1){
-                    clawrotate.setPosition(Scoring1Claw);
+                    clawrotate.setPosition(FrontScoreClaw);
                 }
                 if(TapeLVL == 2){
-                    clawrotate.setPosition(Scoring2Claw);
+                    clawrotate.setPosition(BackScoreClaw);
                 }
-                if(TapeLVL == 3){
-                    clawrotate.setPosition(Scoring3Claw);
-                }
+
                 sleep(100);
                 if(TapeLVL == 1){
-                    armR = Scoring1Arm;
+                    armR = FrontScoreArm;
+                }
+                if(TapeLVL == 2){
+                    armR = BackScoreArm;
                 }
 
             }
