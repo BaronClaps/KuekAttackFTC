@@ -123,10 +123,11 @@ public class TTRoadRed extends LinearOpMode{
 
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
 
-        armR = GroundArm;
+
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
-        clawrotate.setPosition(GroundClaw);
+        armROT.setPosition(GroundArm);
+
 
         //TODO initialize the sensors and motors you added
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
@@ -172,10 +173,8 @@ public class TTRoadRed extends LinearOpMode{
 
                 //----------------------------1----------------------------\\
                 if (blocks[i].x < 90) {
-                   // clawrotate.setPosition(GroundClaw);
-                    //armROT.setPosition(GroundArm);
-                   // clawleft.setPosition(OpenLeft);
-                  //  clawright.setPosition(OpenRight);
+                   clawrotate.setPosition(GroundClaw);
+                   armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .strafeTo(new Vector2d(32,36))
@@ -242,8 +241,8 @@ public class TTRoadRed extends LinearOpMode{
                 //----------------------------3----------------------------\\
                 if (blocks[i].x > 180) {
 
-                    //armROT.setPosition(GroundArm);
-                   // clawrotate.setPosition(GroundClaw);
+                    armROT.setPosition(GroundArm);
+                    clawrotate.setPosition(GroundClaw);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .waitSeconds(.5)

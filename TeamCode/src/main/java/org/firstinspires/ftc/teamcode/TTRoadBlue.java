@@ -98,11 +98,11 @@ public class TTRoadBlue extends LinearOpMode{
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double ScoringClaw = 0.5;
-    double ScoringArm = 0.18;
+    double ScoringClaw = 0.62;
+    double ScoringArm = 0.3;
     double OpenLeft = 0.2;
     double OpenRight = 0;
-    double GroundClaw = 0.425;
+    double GroundClaw = 0.025;
     double GroundArm = 0.0975;
     private HuskyLens huskyLens;
     //TODO add your other motors and sensors here
@@ -132,7 +132,9 @@ public class TTRoadBlue extends LinearOpMode{
 
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        clawright.setPosition(ClosedRight);
+        clawleft.setPosition(ClosedLeft);
+        armROT.setPosition(GroundArm);
 
 
         Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS); //from huskylens example
@@ -167,6 +169,8 @@ public class TTRoadBlue extends LinearOpMode{
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
                 //----------------------------1----------------------------\\
                 if (blocks[i].x < 100) {
+                    clawrotate.setPosition(GroundClaw);
+                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .waitSeconds(.5)
@@ -196,39 +200,46 @@ public class TTRoadBlue extends LinearOpMode{
 
 
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 100 && blocks[i].x < 190) {
+                if (blocks[i].x > 90 && blocks[i].x < 180) {
+                    clawrotate.setPosition(GroundClaw);
+                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(-36,12))
-                                    //.stopAndAdd(openR())
+                                    .strafeTo(new Vector2d(-35.5,15))
+                                    .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(-40)
-                                    .turn(PI/2)
-                                    //.stopAndAdd(closeR())
+                                    .turn(-PI/2)
+                                    .stopAndAdd(closeR())
                                     .waitSeconds(.5)
-                                    //.stopAndAdd(scoringPos())
+                                    .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(-32,44))
-                                    //.stopAndAdd(liftExtend())
-                                    .waitSeconds(1)
-                                    //.stopAndAdd(openL())
+                                    .strafeTo(new Vector2d(-33,44))
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToY(36)
-                                   // .stopAndAdd(liftIn())
-                                    .waitSeconds(1)
-                                    //.stopAndAdd(closeL())
+                                    .lineToY(45)
+                                    .stopAndAdd(liftIn())
                                     .waitSeconds(.5)
-                                    //.stopAndAdd(groundPos())
+                                    .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(-60,50)))
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(.5)
+                                    .strafeTo((new Vector2d(-58,50)))
+                                    .lineToY(60)
                                     .build());
                     sleep(400000);
                 }
 
+
                 //----------------------------3---------------------------\\
-                if (blocks[i].x > 190) {
+                if (blocks[i].x > 180) {
+                    clawrotate.setPosition(GroundClaw);
+                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
+
                             drive.actionBuilder(beginPose)
                                     .strafeTo(new Vector2d(-36,36))
                                     .turn(-1*PI/2)
@@ -273,9 +284,9 @@ public class TTRoadBlue extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-300);
+                arm.setTargetPosition(-600);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                arm.setPower(0.7);
+                arm.setPower(1);
                 return false;
             }
         };
@@ -288,9 +299,9 @@ public class TTRoadBlue extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(300);
+                arm.setTargetPosition(600);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                arm.setPower(0.7);
+                arm.setPower(1);
                 return false;
             }
         };
@@ -342,7 +353,7 @@ public class TTRoadBlue extends LinearOpMode{
         };
     }
 
-public Action closeR(){
+    public Action closeR(){
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -352,7 +363,7 @@ public Action closeR(){
         };
     }
 
-public Action closeL(){
+    public Action closeL(){
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
