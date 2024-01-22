@@ -60,19 +60,19 @@ public class TTDriveCode extends LinearOpMode {
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double Scoring1Claw = 0.5;
-    double Scoring2Claw = 0.525;
-    double Scoring3Claw = 0.575;
-    double Scoring3Arm = 0.18;
-    double Scoring2Arm = 0.17;
+    double Scoring1Claw = 0.075;
+    double Scoring2Claw = 0.1;
+    double Scoring3Claw = 0.15;
+    double MidHangingArm = 0.255;
     double Scoring1Arm = 0.17;
     double HangArm = 0.27;
-
+    double BackScoreArm = 0.3;
+double BackScoreClaw = 0.62;
     double OpenLeft = 0.2;
     double OpenRight = 0;
-    double GroundClaw = 0.425;
+    double GroundClaw = 0.025;
 
-    double GroundArm = 0.0975;
+    double GroundArm = 0.095;
     int TapeLVL = 1;
 
     //---------------Run OpMode-----------------------------//
@@ -158,31 +158,22 @@ public class TTDriveCode extends LinearOpMode {
             }
 
             if (gamepad2.right_bumper){
-                if(TapeLVL == 1){
-                    armR = Scoring1Arm;
-                }
-
-                if(TapeLVL == 2){
-                    armR = Scoring2Arm;
-                }
-
-                if(TapeLVL == 4){
-                    armR = HangArm;
-                }
+               armR = Scoring1Arm;
             }
-            if (gamepad2.dpad_left){
+            if (gamepad2.dpad_up){
                 armR = HangArm;
             }
-            if(gamepad2.dpad_up){
-                arm.setPower(1);
-            } else if (gamepad2.dpad_down) {
-                arm.setPower(-1);
-            } else {
-                arm.setPower(0);
+            if(gamepad2.dpad_down){
+                armR = MidHangingArm;
             }
-            if(gamepad2.dpad_right){
-                TapeLVL = 1;
+            if(gamepad2.dpad_left){
+                armR = BackScoreArm;
+                clawrotate.setPosition(BackScoreClaw);
+                clawleft.setPosition(ClosedLeft);
+                clawright.setPosition(ClosedRight);
             }
+
+
 
 
 
@@ -260,12 +251,7 @@ public class TTDriveCode extends LinearOpMode {
                 if(TapeLVL == 1){
                     armR = Scoring1Arm;
                 }
-                if(TapeLVL == 2){
-                    armR = Scoring2Arm;
-                }
-                if(TapeLVL == 3){
-                    armR = Scoring3Arm;
-                }
+
             }
 
             //-----------Speed Control------------//
