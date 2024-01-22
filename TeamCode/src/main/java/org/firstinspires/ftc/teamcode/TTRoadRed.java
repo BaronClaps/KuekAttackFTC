@@ -176,25 +176,30 @@ public class TTRoadRed extends LinearOpMode{
                     armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-
-                                    .lineToX(30)
+                                    .lineToX(36)
                                     .turn(PI/2)
-                                    .lineToY(0)
-                                    .stopAndAdd(liftExtend())
-                                    .waitSeconds(.5)
                                     .stopAndAdd(openR())
-                                    .lineToY(12)
+                                    .waitSeconds(0.5)
+                                    .lineToY(20)
                                     .stopAndAdd(closeR())
+                                    .waitSeconds(0.5)
                                     .turn(PI)
                                     .stopAndAdd(scoringPos())
-                                    .strafeTo(new Vector2d(42,37))
+                                    .waitSeconds(0.5)
+                                    .strafeTo(new Vector2d(36,44))
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(1)
                                     .stopAndAdd(openL())
-                                    .lineToY(24)
+                                    .waitSeconds(.5)
+                                    .lineToY(36)
+                                    .stopAndAdd(liftIn())
+                                    .waitSeconds(1)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
-                                    .waitSeconds(0.5)
-                                    .strafeTo((new Vector2d(50,60)))
+                                    .waitSeconds(.5)
+                                    .strafeTo((new Vector2d(60,50)))
+
                                     .build());
                     sleep(400000);
                 }
