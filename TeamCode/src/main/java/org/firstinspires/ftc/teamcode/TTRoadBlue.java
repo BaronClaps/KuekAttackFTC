@@ -226,7 +226,7 @@ public class TTRoadBlue extends LinearOpMode{
                     sleep(400000);
                 }
 
-                //----------------------------3----------------------------\\
+                //----------------------------3---------------------------\\
                 if (blocks[i].x > 190) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
