@@ -169,12 +169,13 @@ public class TTRoadBlue extends LinearOpMode{
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
                 //----------------------------1----------------------------\\
                 if (blocks[i].x < 100) {
-                    clawrotate.setPosition(GroundClaw);
                     armROT.setPosition(GroundArm);
+                    sleep(500);
+                    clawrotate.setPosition(GroundClaw);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(-39,28))
+                                    .strafeTo(new Vector2d(-39,30))
                                     .waitSeconds(.5)
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
@@ -182,21 +183,20 @@ public class TTRoadBlue extends LinearOpMode{
                                     .stopAndAdd(closeR())
                                     .turn(-PI/2)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(1) //test this value
+                                    .waitSeconds(1)
                                     .strafeTo(new Vector2d(-33,56))
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToY(45)
+                                    .lineToY(40)
                                     .stopAndAdd(liftIn())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(-52,50)))
-                                    .lineToY(60)
+                                    .strafeTo((new Vector2d(-60,50)))
                                     .build());
                     sleep(400000);
                 }
@@ -204,8 +204,10 @@ public class TTRoadBlue extends LinearOpMode{
 
                 //----------------------------2----------------------------\\
                 if (blocks[i].x > 90 && blocks[i].x < 180) {
-                    clawrotate.setPosition(GroundClaw);
+
                     armROT.setPosition(GroundArm);
+                    sleep(500);
+                    clawrotate.setPosition(GroundClaw);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .setTangent(0)
@@ -213,25 +215,20 @@ public class TTRoadBlue extends LinearOpMode{
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(-40)
-                                    .turn(PI/2)
+                                    .turn(-PI/2)
                                     .stopAndAdd(closeR())
                                     .waitSeconds(.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(-33,44))
-                                    .stopAndAdd(liftExtend())
-                                    .waitSeconds(0.5)
+                                    .strafeTo(new Vector2d(-26,48))
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToY(45)
-                                    .stopAndAdd(liftIn())
-                                    .waitSeconds(.5)
+                                    .lineToY(40)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(-58,50)))
-                                    .lineToY(60)
+                                    .strafeTo((new Vector2d(-60,50)))
                                     .build());
                     sleep(400000);
                 }
@@ -239,16 +236,14 @@ public class TTRoadBlue extends LinearOpMode{
 
                 //----------------------------3---------------------------\\
                 if (blocks[i].x > 180) {
-                    clawrotate.setPosition(GroundClaw);
-                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .strafeTo(new Vector2d(-32,36))
-                                    .turn(PI/2)
-                                    .lineToYConstantHeading(16)
+                                    .turn(-PI/2)
+                                    .lineToY(18)
                                     .stopAndAdd(openR())
                                     .waitSeconds(0.5)
-                                    .lineToX(28)
+                                    .strafeTo(new Vector2d(-27,47.5))
                                     .stopAndAdd(closeR())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(scoringPos())
@@ -258,15 +253,14 @@ public class TTRoadBlue extends LinearOpMode{
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToY(45)
+                                    .lineToY(40)
                                     .stopAndAdd(liftIn())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(-58,50)))
-                                    .lineToY(60)
+                                    .strafeTo((new Vector2d(-60,50)))                                    .lineToY(60)
                                     .build());
                     sleep(400000);
 

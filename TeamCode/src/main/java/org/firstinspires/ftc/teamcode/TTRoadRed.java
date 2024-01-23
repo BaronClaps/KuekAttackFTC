@@ -173,8 +173,9 @@ public class TTRoadRed extends LinearOpMode{
 
                 //----------------------------1----------------------------\\
                 if (blocks[i].x < 90) {
-                   clawrotate.setPosition(GroundClaw);
-                   armROT.setPosition(GroundArm);
+                    armROT.setPosition(GroundArm);
+                    sleep(500);
+                    clawrotate.setPosition(GroundClaw);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .strafeTo(new Vector2d(32,36))
@@ -207,8 +208,9 @@ public class TTRoadRed extends LinearOpMode{
                 
                 //----------------------------2----------------------------\\
                 if (blocks[i].x > 90 && blocks[i].x < 180) {
-                    clawrotate.setPosition(GroundClaw);
                     armROT.setPosition(GroundArm);
+                    sleep(500);
+                    clawrotate.setPosition(GroundClaw);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .setTangent(0)
@@ -240,8 +242,8 @@ public class TTRoadRed extends LinearOpMode{
                 }
                 //----------------------------3----------------------------\\
                 if (blocks[i].x > 180) {
-
                     armROT.setPosition(GroundArm);
+                    sleep(500);
                     clawrotate.setPosition(GroundClaw);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
