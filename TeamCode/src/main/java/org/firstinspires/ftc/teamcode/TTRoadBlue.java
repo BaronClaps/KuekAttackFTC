@@ -220,7 +220,7 @@ public class TTRoadBlue extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(-26,48))
+                                    .strafeTo(new Vector2d(-26,49))
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
                                     .lineToY(40)

@@ -176,6 +176,12 @@ double BackScoreClaw = 0.62;
             if(gamepad2.dpad_up){
                 TapeLVL = 2;
             }
+            if(gamepad2.dpad_left){
+                clawleft.setPosition(OpenLeft);
+            }
+            if(gamepad2.dpad_right){
+                clawright.setPosition(OpenRight);
+            }
 
 
 
