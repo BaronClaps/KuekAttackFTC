@@ -224,13 +224,13 @@ public class TTRoadRed extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(32,45.5))
-                                    .stopAndAdd(liftExtend())
+                                    .strafeTo(new Vector2d(28,46))
+                                    .stopAndAdd(liftExtend2())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
                                     .lineToY(40)
-                                    .stopAndAdd(liftIn())
+                                    .stopAndAdd(liftIn2())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
@@ -321,7 +321,7 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-500);
+                arm.setTargetPosition(-400);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
@@ -333,7 +333,7 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-500);
+                arm.setTargetPosition(-400);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;

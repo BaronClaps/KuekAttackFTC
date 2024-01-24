@@ -65,7 +65,7 @@ public class TTDriveCode extends LinearOpMode {
     double MidHangingArm = 0.255;
     double FrontScoreArm = 0.17;
     double HangArm = 0.27;
-    double BackScoreArm = 0.3;
+    double BackScoreArm = 0.31;
 double BackScoreClaw = 0.62;
     double OpenLeft = 0.2;
     double OpenRight = 0;
