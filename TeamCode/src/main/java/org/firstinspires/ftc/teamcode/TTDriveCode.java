@@ -196,7 +196,7 @@ double BackScoreClaw = 0.62;
 
             if(gamepad1.y)
             {
-                airplane.setPosition(0.2);
+                airplane.setPosition(0.3);
             }
             else
             {

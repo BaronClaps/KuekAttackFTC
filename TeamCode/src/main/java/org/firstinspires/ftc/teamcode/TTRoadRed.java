@@ -200,9 +200,9 @@ public class TTRoadRed extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(54,50)))
-                                    .waitSeconds(.5)
-                                    .lineToY(60)
+                                    .strafeTo((new Vector2d(57,57)))
+                                    //.waitSeconds(.5)
+                                    //.lineToY(60)
                                     .build());
                     sleep(400000);
                 }
@@ -224,7 +224,7 @@ public class TTRoadRed extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(33,45.5))
+                                    .strafeTo(new Vector2d(32,45.5))
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
@@ -236,9 +236,9 @@ public class TTRoadRed extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(54,50)))
-                                    .waitSeconds(.5)
-                                    .lineToY(60)
+                                    .strafeTo((new Vector2d(57,57)))
+                                    //.waitSeconds(.5)
+                                    //.lineToY(60)
                                     .build());
                     sleep(400000);
                 }
@@ -273,9 +273,9 @@ public class TTRoadRed extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(54,50)))
-                                    .waitSeconds(.5)
-                                    .lineToY(60)
+                                    .strafeTo((new Vector2d(57,57)))
+                                    //.waitSeconds(.5)
+                                    //.lineToY(60)
                                     .build());
                     sleep(400000);
 
