@@ -173,13 +173,16 @@ double BackScoreClaw = 0.62;
             if(gamepad2.dpad_down){
                 armR = MidHangingArm;
             } */
+
+
+            /* Backwards Scoring Code */
             if(gamepad2.dpad_up){
                 TapeLVL = 2;
             }
-            if(gamepad2.dpad_left){
+            if(gamepad2.dpad_right){
                 clawleft.setPosition(OpenLeft);
             }
-            if(gamepad2.dpad_right){
+            if(gamepad2.dpad_left){
                 clawright.setPosition(OpenRight);
             }
 
