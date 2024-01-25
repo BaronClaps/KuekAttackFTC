@@ -72,7 +72,7 @@ double BackScoreClaw = 0.62;
     double GroundClaw = 0.025;
 
     double GroundArm = 0.095;
-    int TapeLVL = 1;
+    int TapeLVL = 2;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -237,11 +237,12 @@ double BackScoreClaw = 0.62;
             //--------------Arm-Presets---------------//
             if(gamepad2.right_stick_button)
             {
-                clawright.setPosition(OpenRight);
-                clawleft.setPosition(OpenLeft);
+
                 clawrotate.setPosition(GroundClaw);
-                sleep(100);
                 armR = GroundArm;
+                clawright.setPosition(ClosedRight);
+                clawleft.setPosition(ClosedLeft);
+
 
             }
 
