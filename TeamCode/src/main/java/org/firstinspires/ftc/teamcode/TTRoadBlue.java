@@ -134,7 +134,7 @@ public class TTRoadBlue extends LinearOpMode{
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
-        armROT.setPosition(GroundArm);
+
 
 
         Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS); //from huskylens example
@@ -169,9 +169,9 @@ public class TTRoadBlue extends LinearOpMode{
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
                 //----------------------------1----------------------------\\
                 if (blocks[i].x < 100) {
-                    armROT.setPosition(GroundArm);
-                    sleep(500);
                     clawrotate.setPosition(GroundClaw);
+                    sleep(400);
+                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .setTangent(0)
@@ -206,10 +206,9 @@ public class TTRoadBlue extends LinearOpMode{
 
                 //----------------------------2----------------------------\\
                 if (blocks[i].x > 90 && blocks[i].x < 180) {
-
-                    armROT.setPosition(GroundArm);
-                    sleep(500);
                     clawrotate.setPosition(GroundClaw);
+                    sleep(400);
+                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .setTangent(0)
@@ -244,6 +243,9 @@ public class TTRoadBlue extends LinearOpMode{
 
                 //----------------------------3---------------------------\\
                 if (blocks[i].x > 180) {
+                    clawrotate.setPosition(GroundClaw);
+                    sleep(400);
+                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .strafeTo(new Vector2d(-30,36))

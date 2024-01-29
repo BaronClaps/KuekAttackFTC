@@ -34,8 +34,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="TTDriveCode", group="Linear Opmode")
-public class TTDriveCode extends LinearOpMode {
+@TeleOp(name="TTDriveB", group="Linear Opmode")
+public class TTDriveB extends LinearOpMode {
 
     //---------------Declare Hardware Variables-----------------------//
     private ElapsedTime runtime = new ElapsedTime();
@@ -73,6 +73,8 @@ double BackScoreClaw = 0.62;
 
     double GroundArm = 0.095;
     int TapeLVL = 2;
+    boolean LClosed = true;
+    boolean RClosed = true;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -131,7 +133,7 @@ double BackScoreClaw = 0.62;
 
             //----------Arm-----------//
 
-            if(gamepad2.b)
+            if(gamepad1.b)
             {
                 arm.setPower(1);
             }
@@ -140,7 +142,7 @@ double BackScoreClaw = 0.62;
                 arm.setPower(0);
             }
 
-            if(gamepad2.a)
+            if(gamepad1.a)
             {
                 arm.setPower(-1);
             }
@@ -152,39 +154,7 @@ double BackScoreClaw = 0.62;
             //------Arm Rotate--------//
             armROT.setPosition(armR);
 
-            if (gamepad2.left_bumper){
-                armR = GroundArm;
-            }
 
-            if (gamepad2.right_bumper){
-               if (TapeLVL == 1){
-                   armR = FrontScoreArm;
-               }
-               if (TapeLVL == 2){
-                   armR = BackScoreArm;
-               }
-            }
-            if (gamepad2.dpad_down){
-                TapeLVL = 1;
-            }
-          /*  if (gamepad2.dpad_up){
-                armR = HangArm;
-            }
-            if(gamepad2.dpad_down){
-                armR = MidHangingArm;
-            } */
-
-
-            /* Backwards Scoring Code */
-            if(gamepad2.dpad_up){
-                TapeLVL = 2;
-            }
-            if(gamepad2.dpad_right){
-                clawleft.setPosition(OpenLeft);
-            }
-            if(gamepad2.dpad_left){
-                clawright.setPosition(OpenRight);
-            }
 
 
 
@@ -205,49 +175,64 @@ double BackScoreClaw = 0.62;
 
             //----------Claws & Claw Rotate----------//
 
-            if(gamepad2.right_trigger > 0.5)
+            if(gamepad1.right_trigger > 0.5)
             {
-                clawright.setPosition(ClosedRight);
-                clawleft.setPosition(ClosedLeft);
+                /*if(RClosed == true){
+                    clawright.setPosition(OpenRight);
+                    RClosed = false;
+                    sleep(400);
+                }
+                if(RClosed == false){
+                    clawright.setPosition(ClosedRight);
+                    RClosed = true;
+                    sleep(400);
+                }
+                */
+                 clawright.setPosition(ClosedRight);
+                 clawleft.setPosition(ClosedLeft);
+
             }
 
-            if(gamepad2.left_trigger > 0.5)
+            if(gamepad1.left_trigger > 0.5)
             {
-                clawright.setPosition(OpenRight);
+              /*  if(LClosed == true){
+                    clawleft.setPosition(OpenLeft);
+                    LClosed = false;
+                }
+                if(LClosed == false){
+                    clawleft.setPosition(ClosedLeft);
+                    RClosed = true;
+                }
+
+               */
                 clawleft.setPosition(OpenLeft);
+                clawright.setPosition(OpenRight);
             }
 
-            if(gamepad2.x)
+            if(gamepad1.x)
             {
-                clawrotate.setPosition(GroundClaw);
+                clawleft.setPosition(ClosedLeft);
+                clawright.setPosition(ClosedRight);
             }
 
-            if(gamepad2.y)
-            {
-                if(TapeLVL == 1){
-                    clawrotate.setPosition(FrontScoreClaw);
-                }
-                if(TapeLVL == 2){
-                    clawrotate.setPosition(BackScoreClaw);
-                }
+           /*
 
-
-            }
-
-            if(gamepad2.dpad_up)
+            if(gamepad2.dpad_left)
             {
                 armR = 0.27;
                 sleep(500);
                 clawrotate.setPosition(0);
             }
 
-            if(gamepad2.dpad_down)
+            if(gamepad2.dpad_right)
             {
                 armR = 0.255;
             }
 
+            */
+
             //--------------Arm-Presets---------------//
-            if(gamepad2.right_stick_button)
+            if(gamepad1.right_stick_button)
             {
 
                 clawrotate.setPosition(GroundClaw);
@@ -258,7 +243,7 @@ double BackScoreClaw = 0.62;
 
             }
 
-            if(gamepad2.left_stick_button)
+            if(gamepad1.left_stick_button)
             {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);

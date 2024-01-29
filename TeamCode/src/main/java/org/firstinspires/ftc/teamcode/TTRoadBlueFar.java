@@ -81,9 +81,9 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
-@Autonomous(name="TTRoadRed")
+@Autonomous(name="TTRoadBlueFar")
 
-public class TTRoadRed extends LinearOpMode{
+public class TTRoadBlueFar extends LinearOpMode{
 
     private final int READ_PERIOD = 1;
 
@@ -123,8 +123,8 @@ public class TTRoadRed extends LinearOpMode{
 
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
 
-clawright.setPosition(ClosedRight);
-clawleft.setPosition(ClosedLeft);
+        clawright.setPosition(ClosedRight);
+        clawleft.setPosition(ClosedLeft);
 
 
 
@@ -204,7 +204,7 @@ clawleft.setPosition(ClosedLeft);
                                     .build());
                     sleep(400000);
                 }
-                
+
                 //----------------------------2----------------------------\\
                 if (blocks[i].x > 90 && blocks[i].x < 180) {
                     clawrotate.setPosition(GroundClaw);
@@ -278,7 +278,7 @@ clawleft.setPosition(ClosedLeft);
 
 
                 }
-                
+
 
             }
         }
