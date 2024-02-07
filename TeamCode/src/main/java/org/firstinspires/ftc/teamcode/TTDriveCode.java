@@ -70,7 +70,7 @@ public class TTDriveCode extends LinearOpMode {
     double OpenLeft = 0.2;
     double OpenRight = 0;
     double GroundClaw = 0.025;
-
+    double ScoringClaw = 0.62;
     double GroundArm = 0.095;
     int TapeLVL = 2;
 
@@ -167,6 +167,7 @@ public class TTDriveCode extends LinearOpMode {
 
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
             if (gamepad2.dpad_up)
             {
                 raeg(1);
@@ -187,12 +188,9 @@ public class TTDriveCode extends LinearOpMode {
                 arm.setPower(-1);
             }
 
-            if (gamepad2.dpad_left)
-            {
-                fasttfil(1);
-            }
 
-            if (gamepad1.x)
+
+            if (gamepad2.x)
             {
                 gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -218,52 +216,35 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(OpenLeft);
             }
 
-            if (gamepad2.x) {
-                clawrotate.setPosition(GroundClaw);
+
+            if(gamepad2.dpad_right) {
+                clawleft.setPosition(OpenLeft);
+            }
+            if(gamepad2.dpad_left) {
+                clawright.setPosition(OpenRight);
             }
 
-            if (gamepad2.y) {
-                if (TapeLVL == 1) {
-                    clawrotate.setPosition(FrontScoreClaw);
-                }
-                if (TapeLVL == 2) {
-                    clawrotate.setPosition(BackScoreClaw);
-                }
 
-
-            }
 
             //--------------Arm-Presets---------------//
 
-            if (gamepad2.right_stick_button) {
-
+            if(gamepad2.right_stick_button){
+                tfilPosition(0, 0.8);
+                raegPosition(0, 1);
+                sleep(400);
+                clawright.setPosition(ClosedRight);
+                clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
 
-                clawright.setPosition(ClosedRight);
-                clawleft.setPosition(ClosedLeft);
-
-
             }
 
-            if (gamepad2.left_stick_button) {
-                clawright.setPosition(ClosedRight);
-                clawleft.setPosition(ClosedLeft);
-                if (TapeLVL == 1) {
-                    clawrotate.setPosition(FrontScoreClaw);
-                }
-                if (TapeLVL == 2) {
-                    clawrotate.setPosition(BackScoreClaw);
-                }
-
-                sleep(100);
-
-
-            }
             if(gamepad2.left_stick_button){
-                raegPosition(590, 1);//900
+
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
-                clawrotate.setPosition(GroundClaw);
+                clawrotate.setPosition(ScoringClaw);
+                sleep(400);
+                raegPosition(590, 1);
                 tfilPosition(2050, 0.8);}
 
             //-----------Speed Control------------//
