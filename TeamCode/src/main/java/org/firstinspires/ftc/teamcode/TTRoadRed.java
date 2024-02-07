@@ -171,7 +171,7 @@ clawleft.setPosition(ClosedLeft);
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
 
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 90) {
+                if (blocks[i].x < 90 && blocks[i].id == 1) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);
@@ -206,14 +206,14 @@ clawleft.setPosition(ClosedLeft);
                 }
                 
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 90 && blocks[i].x < 180) {
+                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(35.5,15))
+                                    .strafeTo(new Vector2d(34,15))
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(40)
@@ -222,25 +222,25 @@ clawleft.setPosition(ClosedLeft);
                                     .waitSeconds(.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(28,46))
+                                    .strafeTo(new Vector2d(29,48))
                                     .stopAndAdd(liftExtend2())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToY(40)
+                                    .lineToY(39)
                                     .stopAndAdd(liftIn2())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(groundPos())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60,55)))
-                                    .lineToY(60)
+                                    .strafeTo((new Vector2d(59,54)))
+                                    .lineToY(59)
                                     .build());
                     sleep(400000);
                 }
                 //----------------------------3----------------------------\\
-                if (blocks[i].x > 180) {
+                if (blocks[i].x > 180 && blocks[i].id == 1) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);

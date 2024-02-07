@@ -168,7 +168,7 @@ public class TTRoadBlue extends LinearOpMode{
                 telemetry.addData("location?", blocks[i].x);// this gives you just x
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 100) {
+                if (blocks[i].x < 100 && blocks[i].id == 2) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);
@@ -205,7 +205,7 @@ public class TTRoadBlue extends LinearOpMode{
 
 
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 90 && blocks[i].x < 180) {
+                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 2) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);
@@ -242,7 +242,7 @@ public class TTRoadBlue extends LinearOpMode{
 
 
                 //----------------------------3---------------------------\\
-                if (blocks[i].x > 180) {
+                if (blocks[i].x > 180 && blocks[i].id == 2) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);

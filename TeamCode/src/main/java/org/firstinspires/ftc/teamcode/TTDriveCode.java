@@ -45,7 +45,7 @@ public class TTDriveCode extends LinearOpMode {
     private DcMotor rightBackDrive = null;
     private DcMotor arm = null;
     private Servo airplane = null;
-    private Servo armROT = null;
+    private DcMotor gearROT = null;
     private Servo clawleft = null;
     private Servo clawright = null;
     private Servo clawrotate = null;
@@ -66,7 +66,7 @@ public class TTDriveCode extends LinearOpMode {
     double FrontScoreArm = 0.17;
     double HangArm = 0.27;
     double BackScoreArm = 0.31;
-double BackScoreClaw = 0.62;
+    double BackScoreClaw = 0.62;
     double OpenLeft = 0.2;
     double OpenRight = 0;
     double GroundClaw = 0.025;
@@ -78,13 +78,13 @@ double BackScoreClaw = 0.62;
     @Override
     public void runOpMode() {
         //---------------Init Hardware-----------------------//
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "lf");
-        leftBackDrive  = hardwareMap.get(DcMotor.class, "lb");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "lf");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "lb");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rf");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rb");
         arm = hardwareMap.get(DcMotor.class, "arm");
         airplane = hardwareMap.get(Servo.class, "airplane");
-        armROT = hardwareMap.get(Servo.class,"armROT");
+        gearROT = hardwareMap.get(DcMotor.class, "gearROT");
         clawleft = hardwareMap.get(Servo.class, "clawleft");
         clawright = hardwareMap.get(Servo.class, "clawright");
         clawrotate = hardwareMap.get(Servo.class, "clawrotate");
@@ -93,6 +93,13 @@ double BackScoreClaw = 0.62;
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        gearROT.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        arm.setTargetPosition(0);
+        gearROT.setTargetPosition(0);
         //---------------Setup Servos-----------------------//
         armR = GroundArm;
         clawright.setPosition(ClosedRight);
@@ -109,171 +116,152 @@ double BackScoreClaw = 0.62;
 
             //--------Joysticks Controls & Wheel Power-----------//
             double max;
-            double axial   = -gamepad1.left_stick_y;  //Pushing stick forward gives negative value
-            double lateral =  gamepad1.left_stick_x;
-            double yaw     =  gamepad1.right_stick_x;
-            double leftFrontPower  = axial + lateral + yaw;
+            double axial = -gamepad1.left_stick_y;  //Pushing stick forward gives negative value
+            double lateral = gamepad1.left_stick_x;
+            double yaw = gamepad1.right_stick_x;
+            double leftFrontPower = axial + lateral + yaw;
             double rightFrontPower = axial - lateral - yaw;
-            double leftBackPower   = axial - lateral + yaw;
-            double rightBackPower  = axial + lateral - yaw;
+            double leftBackPower = axial - lateral + yaw;
+            double rightBackPower = axial + lateral - yaw;
             // Normalize the values so no wheel power exceeds 100%
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
 
-            if (max > 1.0)
-            {
-                leftFrontPower  /= max;
+            if (max > 1.0) {
+                leftFrontPower /= max;
                 rightFrontPower /= max;
-                leftBackPower   /= max;
-                rightBackPower  /= max;
+                leftBackPower /= max;
+                rightBackPower /= max;
             }
-
-            //----------Arm-----------//
-
-            if(gamepad2.b)
-            {
-                arm.setPower(1);
-            }
-            else
-            {
-                arm.setPower(0);
-            }
-
-            if(gamepad2.a)
-            {
-                arm.setPower(-1);
-            }
-            else
-            {
-                arm.setPower(0);
-            }
-
             //------Arm Rotate--------//
-            armROT.setPosition(armR);
-
-            if (gamepad2.left_bumper){
+            if (gamepad2.left_bumper) {
                 armR = GroundArm;
             }
 
-            if (gamepad2.right_bumper){
-               if (TapeLVL == 1){
-                   armR = FrontScoreArm;
-               }
-               if (TapeLVL == 2){
-                   armR = BackScoreArm;
-               }
+            if (gamepad2.right_bumper) {
+                if (TapeLVL == 1) {
+                    armR = FrontScoreArm;
+                }
+                if (TapeLVL == 2) {
+                    armR = BackScoreArm;
+                }
             }
-            if (gamepad2.dpad_down){
+
+            if (gamepad2.dpad_down)
+            {
                 TapeLVL = 1;
             }
-          /*  if (gamepad2.dpad_up){
-                armR = HangArm;
-            }
-            if(gamepad2.dpad_down){
-                armR = MidHangingArm;
-            } */
 
-
-            /* Backwards Scoring Code */
-            if(gamepad2.dpad_up){
-                TapeLVL = 2;
-            }
-            if(gamepad2.dpad_right){
+            if (gamepad2.right_bumper)
+            {
                 clawleft.setPosition(OpenLeft);
             }
-            if(gamepad2.dpad_left){
+
+            if (gamepad2.left_bumper)
+            {
                 clawright.setPosition(OpenRight);
             }
 
+            //-----------------Arm Rotate & Arm Preset-----------------//
 
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if (gamepad2.dpad_up)
+            {
+                raeg(1);
+            }
 
+            if (gamepad2.dpad_down)
+            {
+                raeg(-1);
+            }
 
+            if (gamepad2.a)
+            {
+                tfil(-1);
+                telemetry.addData("arm", arm.getCurrentPosition());
+            }
 
+            if (gamepad2.b)
+            {
+                tfil(1);
+                telemetry.addData("arm", arm.getCurrentPosition());
+            }
 
+            if (gamepad2.dpad_left)
+            {
+                fasttfil(1);
+            }
+
+            if (gamepad1.x)
+            {
+                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
 
             //---------Airplane----------//
 
-            if(gamepad1.y)
-            {
+            if (gamepad1.y) {
                 airplane.setPosition(0.5);
-            }
-            else
-            {
+            } else {
                 airplane.setPosition(0.1);
             }
 
             //----------Claws & Claw Rotate----------//
 
-            if(gamepad2.right_trigger > 0.5)
-            {
+            if (gamepad2.right_trigger > 0.5) {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
             }
 
-            if(gamepad2.left_trigger > 0.5)
-            {
+            if (gamepad2.left_trigger > 0.5) {
                 clawright.setPosition(OpenRight);
                 clawleft.setPosition(OpenLeft);
             }
 
-            if(gamepad2.x)
-            {
+            if (gamepad2.x) {
                 clawrotate.setPosition(GroundClaw);
             }
 
-            if(gamepad2.y)
-            {
-                if(TapeLVL == 1){
+            if (gamepad2.y) {
+                if (TapeLVL == 1) {
                     clawrotate.setPosition(FrontScoreClaw);
                 }
-                if(TapeLVL == 2){
+                if (TapeLVL == 2) {
                     clawrotate.setPosition(BackScoreClaw);
                 }
 
 
             }
 
-            if(gamepad2.dpad_up)
-            {
-                armR = 0.27;
-                sleep(500);
-                clawrotate.setPosition(0);
-            }
-
-            if(gamepad2.dpad_down)
-            {
-                armR = 0.255;
-            }
-
             //--------------Arm-Presets---------------//
-            if(gamepad2.right_stick_button)
-            {
+
+            if (gamepad2.right_stick_button) {
 
                 clawrotate.setPosition(GroundClaw);
-                armR = GroundArm;
+
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
 
 
             }
 
-            if(gamepad2.left_stick_button)
-            {
+            if (gamepad2.left_stick_button) {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
-                if(TapeLVL == 1){
+                if (TapeLVL == 1) {
                     clawrotate.setPosition(FrontScoreClaw);
                 }
-                if(TapeLVL == 2){
+                if (TapeLVL == 2) {
                     clawrotate.setPosition(BackScoreClaw);
                 }
 
                 sleep(100);
-                if(TapeLVL == 1){
+                if (TapeLVL == 1) {
                     armR = FrontScoreArm;
                 }
-                if(TapeLVL == 2){
+                if (TapeLVL == 2) {
                     armR = BackScoreArm;
                 }
 
@@ -281,26 +269,22 @@ double BackScoreClaw = 0.62;
 
             //-----------Speed Control------------//
 
-            if(gamepad1.left_bumper)
-            {
+            if (gamepad1.left_bumper) {
                 bspeed = 1;
             }
 
-            if(gamepad1.right_bumper)
-            {
+            if (gamepad1.right_bumper) {
                 bspeed = 2;
             }
 
-            if(bspeed == 1)
-            {
-                lfspeed = leftFrontPower/2;
-                rfspeed = rightFrontPower/2;
-                lbspeed = leftBackPower/2;
-                rbspeed = rightBackPower/2;
+            if (bspeed == 1) {
+                lfspeed = leftFrontPower / 2;
+                rfspeed = rightFrontPower / 2;
+                lbspeed = leftBackPower / 2;
+                rbspeed = rightBackPower / 2;
             }
 
-            if(bspeed == 2)
-            {
+            if (bspeed == 2) {
                 lfspeed = leftFrontPower;
                 rfspeed = rightFrontPower;
                 lbspeed = leftBackPower;
@@ -317,5 +301,21 @@ double BackScoreClaw = 0.62;
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.update();
+        }
+    }
+    public void raeg (int s) {
+        gearROT.setPower(0.333);
+        gearROT.setTargetPosition(gearROT.getCurrentPosition() + 50 * s);
+    }
+    public void tfil (int s) {
+        arm.setPower(0.95);
+        arm.setTargetPosition(arm.getCurrentPosition() + 100 * s);
+    }
+    public void fasttfil (int s) {
+        arm.setPower(1);
+        arm.setTargetPosition(arm.getCurrentPosition() + 250 * s);
+        if (arm.getTargetPosition() > 2500) {//sets a limit on the lift distance
+            arm.setTargetPosition(2500); }
+    }
 
-        }}}
+}

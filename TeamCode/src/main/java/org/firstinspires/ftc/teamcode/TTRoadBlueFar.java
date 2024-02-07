@@ -171,7 +171,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
 
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 90) {
+                if (blocks[i].x < 90 && blocks[i].id == 2) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);
@@ -206,7 +206,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                 }
 
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 90 && blocks[i].x < 180) {
+                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 2) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);
@@ -240,7 +240,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                     sleep(400000);
                 }
                 //----------------------------3----------------------------\\
-                if (blocks[i].x > 180) {
+                if (blocks[i].x > 180 && blocks[i].id == 2) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);

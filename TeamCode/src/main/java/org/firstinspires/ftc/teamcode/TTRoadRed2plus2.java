@@ -44,7 +44,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 import java.util.concurrent.TimeUnit;
 
@@ -81,9 +80,9 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
-@Autonomous(name="TTRoadRedFar")
+@Autonomous(name="TTRoadRed2+2")
 
-public class TTRoadRedFar extends LinearOpMode{
+public class TTRoadRed2plus2 extends LinearOpMode{
 
     private final int READ_PERIOD = 1;
 
@@ -109,7 +108,7 @@ public class TTRoadRedFar extends LinearOpMode{
 
 
     @Override public void runOpMode() {
-        Pose2d beginPose = new Pose2d(-60,-36, 0);
+        Pose2d beginPose = new Pose2d(60, 12, Math.toRadians(180));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -123,6 +122,10 @@ public class TTRoadRedFar extends LinearOpMode{
 
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
 
+clawright.setPosition(ClosedRight);
+clawleft.setPosition(ClosedLeft);
+
+
 
         //TODO initialize the sensors and motors you added
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
@@ -132,8 +135,6 @@ public class TTRoadRedFar extends LinearOpMode{
 
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        clawright.setPosition(ClosedRight);
-        clawleft.setPosition(ClosedLeft);
 
 
 
@@ -167,66 +168,116 @@ public class TTRoadRedFar extends LinearOpMode{
                 telemetry.addData("Block", blocks[i].toString());// this gives you the data
                 telemetry.addData("location?", blocks[i].x);// this gives you just x
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
+
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 100 && blocks[i].id == 1) {
+                if (blocks[i].x < 90) {
                     clawrotate.setPosition(GroundClaw);
                     sleep(400);
                     armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(-39,30))
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .lineToX(-48)
-                                    .stopAndAdd(closeR())
-                                    .build());
-                                    sleep(400000);
-                }
-
-
-                //----------------------------2----------------------------\\
-                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
-                    clawrotate.setPosition(GroundClaw);
-                    sleep(400);
-                    armROT.setPosition(GroundArm);
-                    Actions.runBlocking(
-                            drive.actionBuilder(beginPose)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(-35.5,15))
-                                    .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .lineToX(-40)
-                                    .turn(-PI/2)
-                                    .stopAndAdd(closeR())
-                                    .build());
-                                    sleep(400000);
-                }
-
-
-                //----------------------------3---------------------------\\
-                if (blocks[i].x > 180 && blocks[i].id == 1) {
-                    clawrotate.setPosition(GroundClaw);
-                    sleep(400);
-                    armROT.setPosition(GroundArm);
-                    Actions.runBlocking(
-                            drive.actionBuilder(beginPose)
-                                    .strafeTo(new Vector2d(-30,-48))
-                                    .turn(-PI/2)
-                                    .lineToY(-36)
+                                    .strafeTo(new Vector2d(32,36))
+                                    .turn(PI/2)
+                                    .lineToY(17)
                                     .stopAndAdd(openR())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(-25,-47.5))
+                                    .lineToY(30)
                                     .stopAndAdd(closeR())
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(scoringPos())
+                                    .waitSeconds(0.5)
+                                    .strafeTo(new Vector2d(22.5,53))
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.5)
+                                    .lineToY(43)
+                                    .stopAndAdd(liftIn())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(closeL())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(.5)
+                                    .strafeTo((new Vector2d(60,57)))
+                                    .lineToY(60)
                                     .build());
-                                    sleep(400000);
+                    sleep(400000);
+                }
+                
+                //----------------------------2----------------------------\\
+                if (blocks[i].x > 90 && blocks[i].x < 180) {
+                    clawrotate.setPosition(GroundClaw);
+                    sleep(400);
+                    armROT.setPosition(GroundArm);
+                    Actions.runBlocking(
+                            drive.actionBuilder(beginPose)
+                                    .setTangent(0)
+                                    .strafeTo(new Vector2d(35.5,15))
+                                    .stopAndAdd(openR())
+                                    .waitSeconds(.5)
+                                    .lineToX(40)
+                                    .turn(PI/2)
+                                    .stopAndAdd(closeR())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(scoringPos())
+                                    .waitSeconds(0.5)
+                                    .strafeTo(new Vector2d(28,46))
+                                    .stopAndAdd(liftExtend2())
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.5)
+                                    .lineToY(40)
+                                    .stopAndAdd(liftIn2())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(closeL())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(.5)
+                                    .strafeTo((new Vector2d(60,55)))
+                                    .lineToY(60)
+                                    .build());
+                    sleep(400000);
+                }
+                //----------------------------3----------------------------\\
+                if (blocks[i].x > 180) {
+                    clawrotate.setPosition(GroundClaw);
+                    sleep(400);
+                    armROT.setPosition(GroundArm);
+                    Actions.runBlocking(
+                            drive.actionBuilder(beginPose)
+                                    .waitSeconds(.5)
+                                    .waitSeconds(.5)
+                                    .setTangent(0)
+                                    .strafeTo(new Vector2d(39,26))
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(openR())
+                                    .waitSeconds(.5)
+                                    .lineToX(48)
+                                    .stopAndAdd(closeR())
+                                    .turn(PI/2)
+                                    .stopAndAdd(scoringPos())
+                                    .waitSeconds(1) //test this value
+                                    .strafeTo(new Vector2d(33,56))
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.5)
+                                    .lineToY(42)
+                                    .stopAndAdd(liftIn())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(closeL())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(groundPos())
+                                    .waitSeconds(.5)
+                                    .strafeTo((new Vector2d(60,57)))
+                                    .lineToY(60)
+                                    .build());
+                    sleep(400000);
 
 
 
                 }
-
-
+                
 
             }
         }
@@ -265,7 +316,7 @@ public class TTRoadRedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-500);
+                arm.setTargetPosition(-400);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
@@ -277,7 +328,7 @@ public class TTRoadRedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-500);
+                arm.setTargetPosition(-400);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
@@ -347,6 +398,9 @@ public class TTRoadRedFar extends LinearOpMode{
             }
         };
     }
+
+
+
 
 
 
