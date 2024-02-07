@@ -179,14 +179,12 @@ public class TTDriveCode extends LinearOpMode {
 
             if (gamepad2.a)
             {
-                tfil(-1);
-                telemetry.addData("arm", arm.getCurrentPosition());
+              arm.setPower(1);
             }
 
             if (gamepad2.b)
             {
-                tfil(1);
-                telemetry.addData("arm", arm.getCurrentPosition());
+                arm.setPower(-1);
             }
 
             if (gamepad2.dpad_left)
@@ -258,14 +256,15 @@ public class TTDriveCode extends LinearOpMode {
                 }
 
                 sleep(100);
-                if (TapeLVL == 1) {
-                    armR = FrontScoreArm;
-                }
-                if (TapeLVL == 2) {
-                    armR = BackScoreArm;
-                }
+
 
             }
+            if(gamepad2.left_stick_button){
+                raegPosition(590, 1);//900
+                clawright.setPosition(ClosedRight);
+                clawleft.setPosition(ClosedLeft);
+                clawrotate.setPosition(GroundClaw);
+                tfilPosition(2050, 0.8);}
 
             //-----------Speed Control------------//
 
@@ -303,6 +302,8 @@ public class TTDriveCode extends LinearOpMode {
             telemetry.update();
         }
     }
+    public void raegPosition (int h, double H) {gearROT.setTargetPosition(h); gearROT.setPower(H); }
+    public void tfilPosition (int e, double E) {arm.setTargetPosition(e); arm.setPower(E); }
     public void raeg (int s) {
         gearROT.setPower(0.333);
         gearROT.setTargetPosition(gearROT.getCurrentPosition() + 50 * s);
