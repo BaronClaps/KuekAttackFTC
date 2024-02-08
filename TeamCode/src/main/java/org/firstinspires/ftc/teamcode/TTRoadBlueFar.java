@@ -88,10 +88,10 @@ public class TTRoadBlueFar extends LinearOpMode{
     private final int READ_PERIOD = 1;
 
     private DcMotor arm = null;
-    private Servo armROT = null; //e1
     private Servo clawrotate = null; //es1
     private Servo clawleft = null; //es1
     private Servo clawright = null; //es2
+    private DcMotor gearROT = null;
 
     //---------------Declare Variables-----------------------//
     private double armR;
@@ -116,27 +116,26 @@ public class TTRoadBlueFar extends LinearOpMode{
         // to 'get' must match the names assigned during the robot configuration.
         // step (using the FTC Robot Controller app on the phone).
         arm = hardwareMap.get(DcMotor.class, "arm");
-        armROT = hardwareMap.get(Servo.class, "armROT");
         clawrotate = hardwareMap.get(Servo.class, "clawrotate");
         clawleft = hardwareMap.get(Servo.class, "clawleft");
         clawright = hardwareMap.get(Servo.class, "clawright");
-
+        gearROT = hardwareMap.get(DcMotor.class, "gearROT");
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
-
-        clawright.setPosition(ClosedRight);
-        clawleft.setPosition(ClosedLeft);
-
-
 
         //TODO initialize the sensors and motors you added
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 
-
+        gearROT.setDirection(DcMotor.Direction.REVERSE);
+        gearROT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        clawright.setPosition(ClosedRight);
+        clawleft.setPosition(ClosedLeft);
 
 
         Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS); //from huskylens example
@@ -172,11 +171,12 @@ public class TTRoadBlueFar extends LinearOpMode{
 
                 //----------------------------1----------------------------\\
                 if (blocks[i].x < 90 && blocks[i].id == 2) {
-                    clawrotate.setPosition(GroundClaw);
-                    sleep(400);
-                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
+                                    .stopAndAdd(groundclaw())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(geardown())//arm down
+                                    .waitSeconds(.5)
                                     .strafeTo(new Vector2d(32,36))
                                     .turn(PI/2)
                                     .lineToY(17)
@@ -197,7 +197,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(groundPos())
+                                    .stopAndAdd(geardown())
                                     .waitSeconds(.5)
                                     .strafeTo((new Vector2d(60,57)))
                                     .lineToY(60)
@@ -207,11 +207,12 @@ public class TTRoadBlueFar extends LinearOpMode{
 
                 //----------------------------2----------------------------\\
                 if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 2) {
-                    clawrotate.setPosition(GroundClaw);
-                    sleep(400);
-                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
+                                    .stopAndAdd(groundclaw())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(geardown())//arm down
+                                    .waitSeconds(.5)
                                     .setTangent(0)
                                     .strafeTo(new Vector2d(35.5,15))
                                     .stopAndAdd(openR())
@@ -232,7 +233,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(groundPos())
+                                    .stopAndAdd(geardown())
                                     .waitSeconds(.5)
                                     .strafeTo((new Vector2d(60,55)))
                                     .lineToY(60)
@@ -241,12 +242,11 @@ public class TTRoadBlueFar extends LinearOpMode{
                 }
                 //----------------------------3----------------------------\\
                 if (blocks[i].x > 180 && blocks[i].id == 2) {
-                    clawrotate.setPosition(GroundClaw);
-                    sleep(400);
-                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
+                                    .stopAndAdd(groundclaw())
                                     .waitSeconds(.5)
+                                    .stopAndAdd(geardown())//arm down
                                     .waitSeconds(.5)
                                     .setTangent(0)
                                     .strafeTo(new Vector2d(39,26))
@@ -268,7 +268,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(groundPos())
+                                    .stopAndAdd(geardown())
                                     .waitSeconds(.5)
                                     .strafeTo((new Vector2d(60,57)))
                                     .lineToY(60)
@@ -297,7 +297,25 @@ public class TTRoadBlueFar extends LinearOpMode{
         };
     }
 
+    public Action geardown(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(GroundClaw);
+                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gearROT.setTargetPosition(-400);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.333);
 
+                while (gearROT.isBusy()) {
+                    sleep(25);
+                }
+
+                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gearROT.setPower(0); return false;
+            }
+        };
+    }
 
     public Action liftIn(){
         return new Action() {
@@ -332,6 +350,26 @@ public class TTRoadBlueFar extends LinearOpMode{
                 arm.setTargetPosition(-400);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
+                return false;
+            }
+        };
+    }
+
+    public Action groundclaw(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(GroundClaw);
+                return false;
+            }
+        };
+    }
+
+    public Action scoreclaw(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(ScoringArm);
                 return false;
             }
         };
@@ -382,19 +420,10 @@ public class TTRoadBlueFar extends LinearOpMode{
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                armROT.setPosition(ScoringArm);
                 clawrotate.setPosition(ScoringClaw);
-                return false;
-            }
-        };
-    }
-
-    public Action groundPos(){
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                armROT.setPosition(GroundArm);
-                clawrotate.setPosition(GroundClaw);
+                gearROT.setTargetPosition(750);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.15);
                 return false;
             }
         };

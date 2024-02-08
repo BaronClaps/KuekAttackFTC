@@ -88,10 +88,10 @@ public class TTRoadRed extends LinearOpMode{
     private final int READ_PERIOD = 1;
 
     private DcMotor arm = null;
-    private Servo armROT = null; //e1
     private Servo clawrotate = null; //es1
     private Servo clawleft = null; //es1
     private Servo clawright = null; //es2
+    private DcMotor gearROT = null;
 
     //---------------Declare Variables-----------------------//
     private double armR;
@@ -116,28 +116,25 @@ public class TTRoadRed extends LinearOpMode{
         // to 'get' must match the names assigned during the robot configuration.
         // step (using the FTC Robot Controller app on the phone).
         arm = hardwareMap.get(DcMotor.class, "arm");
-        armROT = hardwareMap.get(Servo.class, "armROT");
         clawrotate = hardwareMap.get(Servo.class, "clawrotate");
         clawleft = hardwareMap.get(Servo.class, "clawleft");
         clawright = hardwareMap.get(Servo.class, "clawright");
-
+        gearROT = hardwareMap.get(DcMotor.class, "gearROT");
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
-
-clawright.setPosition(ClosedRight);
-clawleft.setPosition(ClosedLeft);
-
-
 
         //TODO initialize the sensors and motors you added
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 
-
+        gearROT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-
+        clawright.setPosition(ClosedRight);
+        clawleft.setPosition(ClosedLeft);
 
         Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS); //from huskylens example
         rateLimit.expire();
@@ -172,13 +169,14 @@ clawleft.setPosition(ClosedLeft);
 
                 //----------------------------1----------------------------\\
                 if (blocks[i].x < 90 && blocks[i].id == 1) {
-                    clawrotate.setPosition(GroundClaw);
-                    sleep(400);
-                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .strafeTo(new Vector2d(32,36))
-                                    .turn(PI/2)
+                                    .stopAndAdd(groundclaw())
+                                    .waitSeconds(2)
+                                    .stopAndAdd(geardown())//arm down
+                                    .waitSeconds(0.5)
+                                    .strafeTo(new Vector2d(32, 36))
+                                    .turn(PI / 2)
                                     .lineToY(17)
                                     .stopAndAdd(openR())
                                     .waitSeconds(0.5)
@@ -187,7 +185,7 @@ clawleft.setPosition(ClosedLeft);
                                     .waitSeconds(0.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(22.5,53))
+                                    .strafeTo(new Vector2d(22.5, 53))
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
@@ -197,32 +195,36 @@ clawleft.setPosition(ClosedLeft);
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(groundPos())
-                                    .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60,57)))
-                                    .lineToY(60)
+                                    .stopAndAdd(geardownTEST())
+                                    .waitSeconds(3)
+                                    //.stopAndAdd(downposition())
+                                    //.waitSeconds(.5)
+                                    //arm down
+                                    .strafeTo((new Vector2d(60, 57)))
+                                    .lineToY(56)
                                     .build());
                     sleep(400000);
                 }
-                
+
                 //----------------------------2----------------------------\\
                 if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
-                    clawrotate.setPosition(GroundClaw);
-                    sleep(400);
-                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
+                                    .stopAndAdd(groundclaw())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(geardown())//arm down
+                                    .waitSeconds(.5)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(34,15))
+                                    .strafeTo(new Vector2d(34, 15))
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(40)
-                                    .turn(PI/2)
+                                    .turn(PI / 2)
                                     .stopAndAdd(closeR())
                                     .waitSeconds(.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(29,48))
+                                    .strafeTo(new Vector2d(29, 48))
                                     .stopAndAdd(liftExtend2())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
@@ -232,33 +234,32 @@ clawleft.setPosition(ClosedLeft);
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(groundPos())
+                                    //.stopAndAdd(downposition())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(59,54)))
+                                    .strafeTo((new Vector2d(59, 54)))
                                     .lineToY(59)
                                     .build());
                     sleep(400000);
                 }
                 //----------------------------3----------------------------\\
                 if (blocks[i].x > 180 && blocks[i].id == 1) {
-                    clawrotate.setPosition(GroundClaw);
-                    sleep(400);
-                    armROT.setPosition(GroundArm);
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
+                                    .stopAndAdd(groundclaw())
                                     .waitSeconds(.5)
+                                    .stopAndAdd(geardown())//arm down
                                     .waitSeconds(.5)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(39,26))
+                                    .strafeTo(new Vector2d(39, 26))
                                     .waitSeconds(.5)
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(48)
                                     .stopAndAdd(closeR())
-                                    .turn(PI/2)
+                                    .turn(PI / 2)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(1) //test this value
-                                    .strafeTo(new Vector2d(33,56))
+                                    .strafeTo(new Vector2d(33, 56))
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
@@ -268,17 +269,16 @@ clawleft.setPosition(ClosedLeft);
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(groundPos())
+                                    //.stopAndAdd(downposition())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60,57)))
+                                    .strafeTo((new Vector2d(60, 57)))
                                     .lineToY(60)
                                     .build());
                     sleep(400000);
 
 
-
                 }
-                
+
 
             }
         }
@@ -297,8 +297,34 @@ clawleft.setPosition(ClosedLeft);
         };
     }
 
+    public Action geardown(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(GroundClaw);
+                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gearROT.setTargetPosition(-800);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.5);
+                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gearROT.setPower(0);
+                return false;
+            }
+        };
+    }
+    public Action geardownTEST(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-
+                gearROT.setTargetPosition(800);
+                gearROT.setPower(0.7);
+                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gearROT.setPower(0);
+                return false;
+            }
+        };
+    }
     public Action liftIn(){
         return new Action() {
             @Override
@@ -337,6 +363,15 @@ clawleft.setPosition(ClosedLeft);
         };
     }
 
+    public Action groundclaw(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(GroundClaw);
+                return false;
+            }
+        };
+    }
 
     public Action openR(){
         return new Action() {
@@ -382,26 +417,29 @@ clawleft.setPosition(ClosedLeft);
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                armROT.setPosition(ScoringArm);
                 clawrotate.setPosition(ScoringClaw);
+                gearROT.setTargetPosition(670);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.4);
                 return false;
             }
         };
     }
 
-    public Action groundPos(){
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                armROT.setPosition(GroundArm);
-                clawrotate.setPosition(GroundClaw);
-                return false;
-            }
-        };
-    }
-
-
-
+//    public Action downposition(){
+//        return new Action() {
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+//                clawrotate.setPosition(GroundClaw);
+//                gearROT.setTargetPosition();
+//                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                gearROT.setPower(0.333);
+//                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                gearROT.setPower(0);
+//                return false;
+//            }
+//        };
+//    }
 
 
 

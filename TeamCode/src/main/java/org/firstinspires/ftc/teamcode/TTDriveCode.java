@@ -60,19 +60,10 @@ public class TTDriveCode extends LinearOpMode {
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double FrontScoreClaw = 0.075;
-
-    double MidHangingArm = 0.255;
-    double FrontScoreArm = 0.17;
-    double HangArm = 0.27;
-    double BackScoreArm = 0.31;
-    double BackScoreClaw = 0.62;
     double OpenLeft = 0.2;
     double OpenRight = 0;
-    double GroundClaw = 0.025;
-    double ScoringClaw = 0.62;
-    double GroundArm = 0.095;
-    int TapeLVL = 2;
+    double GroundClaw = 0;
+    double ScoringClaw = 0.63;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -101,7 +92,6 @@ public class TTDriveCode extends LinearOpMode {
         arm.setTargetPosition(0);
         gearROT.setTargetPosition(60);
         //---------------Setup Servos-----------------------//
-        armR = GroundArm;
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
         clawrotate.setPosition(GroundClaw);
@@ -203,7 +193,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
                 sleep(400);
-                raegPosition(60, 0.4);
+                raegPosition(60, 0.2);
             }
 
             if(gamepad2.left_stick_button)
@@ -212,7 +202,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(ScoringClaw);
                 sleep(400);
-                raegPosition(590, 0.4);
+                raegPosition(640, 0.4);
             }
 
             //-----------Speed Control------------//
@@ -233,10 +223,10 @@ public class TTDriveCode extends LinearOpMode {
             }
 
             if (bspeed == 2) {
-                lfspeed = leftFrontPower;
-                rfspeed = rightFrontPower;
-                lbspeed = leftBackPower;
-                rbspeed = rightBackPower;
+                lfspeed = leftFrontPower/1.25;
+                rfspeed = rightFrontPower/1.25;
+                lbspeed = leftBackPower/1.25;
+                rbspeed = rightBackPower/1.25;
             }
 
             leftFrontDrive.setPower(lfspeed);
