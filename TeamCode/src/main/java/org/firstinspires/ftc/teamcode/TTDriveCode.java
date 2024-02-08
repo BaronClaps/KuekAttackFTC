@@ -60,13 +60,7 @@ public class TTDriveCode extends LinearOpMode {
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double FrontScoreClaw = 0.075;
-
-    double MidHangingArm = 0.255;
-    double FrontScoreArm = 0.17;
-    double HangArm = 0.27;
     double BackScoreArm = 0.31;
-    double BackScoreClaw = 0.62;
     double OpenLeft = 0.2;
     double OpenRight = 0;
     double GroundClaw = 0.025;
@@ -101,7 +95,6 @@ public class TTDriveCode extends LinearOpMode {
         arm.setTargetPosition(0);
         gearROT.setTargetPosition(0);
         //---------------Setup Servos-----------------------//
-        armR = GroundArm;
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
         clawrotate.setPosition(GroundClaw);
@@ -134,34 +127,6 @@ public class TTDriveCode extends LinearOpMode {
                 leftBackPower /= max;
                 rightBackPower /= max;
             }
-            //------Arm Rotate--------//
-            if (gamepad2.left_bumper) {
-                armR = GroundArm;
-            }
-
-            if (gamepad2.right_bumper) {
-                if (TapeLVL == 1) {
-                    armR = FrontScoreArm;
-                }
-                if (TapeLVL == 2) {
-                    armR = BackScoreArm;
-                }
-            }
-
-            if (gamepad2.dpad_down)
-            {
-                TapeLVL = 1;
-            }
-
-            if (gamepad2.right_bumper)
-            {
-                clawleft.setPosition(OpenLeft);
-            }
-
-            if (gamepad2.left_bumper)
-            {
-                clawright.setPosition(OpenRight);
-            }
 
             //-----------------Arm Rotate & Arm Preset-----------------//
 
@@ -182,14 +147,19 @@ public class TTDriveCode extends LinearOpMode {
             {
               arm.setPower(1);
             }
+            else {
+                arm.setPower(0);
+            }
 
             if (gamepad2.b)
             {
                 arm.setPower(-1);
             }
+            else {
+                arm.setPower(0);
+            }
 
-
-
+            //Must be pressed before start of match
             if (gamepad2.x)
             {
                 gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -216,15 +186,13 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(OpenLeft);
             }
 
-
+            //Below are weird due to manual control whilst we score backwards
             if(gamepad2.dpad_right) {
                 clawleft.setPosition(OpenLeft);
             }
             if(gamepad2.dpad_left) {
                 clawright.setPosition(OpenRight);
             }
-
-
 
             //--------------Arm-Presets---------------//
 
@@ -235,17 +203,16 @@ public class TTDriveCode extends LinearOpMode {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
-
             }
 
             if(gamepad2.left_stick_button){
-
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(ScoringClaw);
                 sleep(400);
                 raegPosition(590, 1);
-                tfilPosition(2050, 0.8);}
+                tfilPosition(2050, 0.8);
+            }
 
             //-----------Speed Control------------//
 
