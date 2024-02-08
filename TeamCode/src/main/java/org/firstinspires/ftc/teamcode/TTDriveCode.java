@@ -60,7 +60,13 @@ public class TTDriveCode extends LinearOpMode {
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
+    double FrontScoreClaw = 0.075;
+
+    double MidHangingArm = 0.255;
+    double FrontScoreArm = 0.17;
+    double HangArm = 0.27;
     double BackScoreArm = 0.31;
+    double BackScoreClaw = 0.62;
     double OpenLeft = 0.2;
     double OpenRight = 0;
     double GroundClaw = 0.025;
@@ -93,8 +99,9 @@ public class TTDriveCode extends LinearOpMode {
         gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         arm.setTargetPosition(0);
-        gearROT.setTargetPosition(0);
+        gearROT.setTargetPosition(60);
         //---------------Setup Servos-----------------------//
+        armR = GroundArm;
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
         clawrotate.setPosition(GroundClaw);
@@ -127,7 +134,6 @@ public class TTDriveCode extends LinearOpMode {
                 leftBackPower /= max;
                 rightBackPower /= max;
             }
-
             //-----------------Arm Rotate & Arm Preset-----------------//
 
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -145,21 +151,14 @@ public class TTDriveCode extends LinearOpMode {
 
             if (gamepad2.a)
             {
-              arm.setPower(1);
-            }
-            else {
-                arm.setPower(0);
+              tfil(-1);
             }
 
             if (gamepad2.b)
             {
-                arm.setPower(-1);
-            }
-            else {
-                arm.setPower(0);
+                tfil(1);
             }
 
-            //Must be pressed before start of match
             if (gamepad2.x)
             {
                 gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -176,17 +175,17 @@ public class TTDriveCode extends LinearOpMode {
 
             //----------Claws & Claw Rotate----------//
 
-            if (gamepad2.right_trigger > 0.5) {
+            if (gamepad2.right_trigger > 0.1) {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
             }
 
-            if (gamepad2.left_trigger > 0.5) {
+            if (gamepad2.left_trigger > 0.1) {
                 clawright.setPosition(OpenRight);
                 clawleft.setPosition(OpenLeft);
             }
 
-            //Below are weird due to manual control whilst we score backwards
+
             if(gamepad2.dpad_right) {
                 clawleft.setPosition(OpenLeft);
             }
@@ -194,24 +193,26 @@ public class TTDriveCode extends LinearOpMode {
                 clawright.setPosition(OpenRight);
             }
 
+
+
             //--------------Arm-Presets---------------//
 
-            if(gamepad2.right_stick_button){
-                tfilPosition(0, 0.8);
-                raegPosition(0, 1);
-                sleep(400);
+            if(gamepad2.right_stick_button)
+            {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
+                sleep(400);
+                raegPosition(60, 0.4);
             }
 
-            if(gamepad2.left_stick_button){
+            if(gamepad2.left_stick_button)
+            {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(ScoringClaw);
                 sleep(400);
-                raegPosition(590, 1);
-                tfilPosition(2050, 0.8);
+                raegPosition(590, 0.4);
             }
 
             //-----------Speed Control------------//
@@ -254,10 +255,10 @@ public class TTDriveCode extends LinearOpMode {
     public void tfilPosition (int e, double E) {arm.setTargetPosition(e); arm.setPower(E); }
     public void raeg (int s) {
         gearROT.setPower(0.333);
-        gearROT.setTargetPosition(gearROT.getCurrentPosition() + 50 * s);
+        gearROT.setTargetPosition(gearROT.getCurrentPosition() + 30 * s);
     }
     public void tfil (int s) {
-        arm.setPower(0.95);
+        arm.setPower(1);
         arm.setTargetPosition(arm.getCurrentPosition() + 100 * s);
     }
     public void fasttfil (int s) {
