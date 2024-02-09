@@ -63,7 +63,7 @@ public class TTDriveCode extends LinearOpMode {
     double OpenLeft = 0.2;
     double OpenRight = 0;
     double GroundClaw = 0;
-    double ScoringClaw = 0.63;
+    double ScoringClaw = 0.59;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -193,7 +193,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
                 sleep(400);
-                raegPosition(60, 0.2);
+                raegPosition(40, 0.15);
             }
 
             if(gamepad2.left_stick_button)
@@ -202,7 +202,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(ScoringClaw);
                 sleep(400);
-                raegPosition(640, 0.4);
+                raegPosition(670, 0.25);
             }
 
             //-----------Speed Control------------//
@@ -223,10 +223,10 @@ public class TTDriveCode extends LinearOpMode {
             }
 
             if (bspeed == 2) {
-                lfspeed = leftFrontPower/1.25;
-                rfspeed = rightFrontPower/1.25;
-                lbspeed = leftBackPower/1.25;
-                rbspeed = rightBackPower/1.25;
+                lfspeed = leftFrontPower/1.15;
+                rfspeed = rightFrontPower/1.15;
+                lbspeed = leftBackPower/1.15;
+                rbspeed = rightBackPower/1.15;
             }
 
             leftFrontDrive.setPower(lfspeed);

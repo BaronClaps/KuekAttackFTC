@@ -302,7 +302,6 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawrotate.setPosition(GroundClaw);
-                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 gearROT.setTargetPosition(-800);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.5);
@@ -316,9 +315,10 @@ public class TTRoadRed extends LinearOpMode{
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-
-                gearROT.setTargetPosition(800);
-                gearROT.setPower(0.7);
+                clawrotate.setPosition(GroundClaw);
+                gearROT.setTargetPosition(-800);
+                gearROT.setPower(1);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 gearROT.setPower(0);
                 return false;
