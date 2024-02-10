@@ -171,22 +171,26 @@ public class TTRoadRed extends LinearOpMode{
                 if (blocks[i].x < 90 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
-                                    .waitSeconds(2)
-                                    .stopAndAdd(geardown())//arm down
+                                    .stopAndAdd(StartPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(32, 36))
+                                    .splineTo(new Vector2d(36,13.5),-1*Math.PI/2)
+                                    //.stopAndAdd(GearROT0())
+                                    .waitSeconds(.5)
+                                    /*.strafeTo(new Vector2d(32, 36))
                                     .turn(PI / 2)
-                                    .lineToY(17)
+                                    .lineToY(17)*/
                                     .stopAndAdd(openR())
                                     .waitSeconds(0.5)
-                                    .lineToY(30)
+                                    .stopAndAdd(scoringPos())
+                                    .waitSeconds(.5)
                                     .stopAndAdd(closeR())
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(.5)
+                                   /* .lineToY(30)
                                     .waitSeconds(0.5)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(22.5, 53))
-                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(0.5) */
+                                    .strafeTo(new Vector2d(22.5, 50))
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
@@ -196,12 +200,12 @@ public class TTRoadRed extends LinearOpMode{
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(geardownTEST())
-                                    .waitSeconds(3)
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(GearROT0())
                                     //.stopAndAdd(downposition())
                                     //.waitSeconds(.5)
                                     //arm down
-                                    .strafeTo((new Vector2d(60, 57)))
-                                    .lineToY(56)
+                                    .strafeTo((new Vector2d(66, 54)))
                                     .build());
                     sleep(400000);
                 }
@@ -224,7 +228,7 @@ public class TTRoadRed extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(29, 48))
+                                    .strafeTo(new Vector2d(28, 48.5))
                                     .stopAndAdd(liftExtend2())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
@@ -316,10 +320,31 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawrotate.setPosition(GroundClaw);
-                gearROT.setTargetPosition(-800);
-                gearROT.setPower(1);
+                gearROT.setTargetPosition(200);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                gearROT.setPower(0.4);
+
+                return false;
+            }
+        };
+    }
+    public Action StartPos(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                clawrotate.setPosition(GroundClaw);
+                gearROT.setTargetPosition(50);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.4);
+                return false;
+            }
+        };
+    }
+    public Action GearROT0(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket){
                 gearROT.setPower(0);
                 return false;
             }
