@@ -173,7 +173,7 @@ public class TTRoadRed extends LinearOpMode{
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
                                     .waitSeconds(0.5)
-                                    .splineTo(new Vector2d(36,13.5),-1*Math.PI/2)
+                                    .splineTo(new Vector2d(35,11),-1*Math.PI/2)
                                     //.stopAndAdd(GearROT0())
                                     .waitSeconds(.5)
                                     /*.strafeTo(new Vector2d(32, 36))
@@ -333,10 +333,11 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-                clawrotate.setPosition(GroundClaw);
+
                 gearROT.setTargetPosition(50);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.4);
+                clawrotate.setPosition(GroundClaw);
                 return false;
             }
         };
