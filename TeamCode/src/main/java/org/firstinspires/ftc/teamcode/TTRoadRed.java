@@ -240,35 +240,30 @@ public class TTRoadRed extends LinearOpMode{
                 if (blocks[i].x > 180 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(39, 32))
+                                    .stopAndAdd(StartPos())
+                                    .strafeTo(new Vector2d(29.5, 40))
                                     .waitSeconds(.5)
                                     .turn(PI / 2)
                                     .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .lineToX(48)
-                                    .stopAndAdd(closeR())
-                                    .turn(PI / 2)
+                                    .waitSeconds(.1)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(1) //test this value
-                                    .strafeTo(new Vector2d(33, 56))
+                                    .strafeTo(new Vector2d(43.5, 48))
+                                    .stopAndAdd(closeR())
                                     .stopAndAdd(liftExtend())
-                                    .waitSeconds(0.5)
+                                    .waitSeconds(.25) //test this value
+                                    .lineToY(55)
                                     .stopAndAdd(openL())
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.1)
                                     .lineToY(42)
+                                    .strafeTo((new Vector2d(67.5, 50)))
                                     .stopAndAdd(liftIn())
-                                    .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    //.stopAndAdd(downposition())
+                                    .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60, 57)))
-                                    .lineToY(60)
+                                    .stopAndAdd(GearROT0())
+                                    .lineToY(63)
+
                                     .build());
                     sleep(400000);
 
