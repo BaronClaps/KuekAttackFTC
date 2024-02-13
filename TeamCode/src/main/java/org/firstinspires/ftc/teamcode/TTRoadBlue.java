@@ -85,6 +85,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TTRoadBlue extends LinearOpMode{
 
+    //---------------Declare Variables-----------------------//
     private final int READ_PERIOD = 1;
 
     private DcMotor arm = null;
@@ -93,8 +94,6 @@ public class TTRoadBlue extends LinearOpMode{
     private Servo clawright = null; //es2
     private DcMotor gearROT = null;
 
-    //---------------Declare Variables-----------------------//
-    private double armR;
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
@@ -102,9 +101,8 @@ public class TTRoadBlue extends LinearOpMode{
     double OpenRight = 0;
     double GroundClaw = 0;
     double ScoringClaw = 0.59;
-
     private HuskyLens huskyLens;
-    //TODO add your other motors and sensors here
+
 
 
     @Override public void runOpMode() {
@@ -120,12 +118,6 @@ public class TTRoadBlue extends LinearOpMode{
         clawright = hardwareMap.get(Servo.class, "clawright");
         gearROT = hardwareMap.get(DcMotor.class, "gearROT");
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
-
-
-        //TODO initialize the sensors and motors you added
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 
 
         gearROT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -202,35 +194,28 @@ public class TTRoadBlue extends LinearOpMode{
                 if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(-33,14.5))
+                                    .stopAndAdd(StartPos())
+                                    .strafeTo(new Vector2d(-36.5, 13))
                                     .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .lineToX(-40)
-                                    .turn(-PI/2)
-                                    .stopAndAdd(closeR())
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.1)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(-25,51))
+                                    .stopAndAdd(closeR())
+                                    .lineToX(-40)
+                                    .turn(-1*PI/2)
+                                    .strafeTo(new Vector2d(-27.5, 48))
                                     .stopAndAdd(liftExtend())
-                                    .waitSeconds(0.5)
-                                    .stopAndAdd(openL())
                                     .waitSeconds(.5)
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.25)
                                     .lineToY(40)
                                     .stopAndAdd(closeL())
-                                    .waitSeconds(.5)
                                     .stopAndAdd(liftIn())
-                                    .waitSeconds(0.5)
-                                    .stopAndAdd(geardown())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(-53,50)))
+                                    .strafeTo((new Vector2d(-60.5, 50)))
+                                    .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
-                                    .lineToY(60)
+                                    .stopAndAdd(GearROT0())
+                                    .lineToY(56)
                                     .build());
                     sleep(400000);
                 }
@@ -240,35 +225,26 @@ public class TTRoadBlue extends LinearOpMode{
                 if (blocks[i].x > 180 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(-30,36))
-                                    .turn(-PI/2)
-                                    .lineToY(18)
+                                    .stopAndAdd(StartPos())
+                                    .splineTo(new Vector2d(35,11),Math.PI/2)
+                                    .waitSeconds(.1)
                                     .stopAndAdd(openR())
-                                    .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(-25,47.5))
-                                    .stopAndAdd(closeR())
-                                    .waitSeconds(0.5)
+                                    .waitSeconds(.25)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(-20.5,54))
+                                    .strafeTo(new Vector2d(22.5, 48))
+                                    .waitSeconds(.25)
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.2)
                                     .lineToY(40)
-                                    .stopAndAdd(closeL())
-                                    .waitSeconds(.5)
                                     .stopAndAdd(liftIn())
-                                    .waitSeconds(0.5)
-                                    .stopAndAdd(geardown())
-                                    .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(-54,50)))
-                                    .waitSeconds(.5)
-                                    .lineToY(60)
+                                    .stopAndAdd(closeL())
+                                    .strafeTo((new Vector2d(66, 54)))
+                                    .waitSeconds(.25)
+                                    .stopAndAdd(geardownTEST())
+                                    .waitSeconds(.1)
+                                    .stopAndAdd(GearROT0())
                                     .build());
                     sleep(400000);
 

@@ -226,8 +226,6 @@ public class TTRoadRed extends LinearOpMode{
                                     .stopAndAdd(closeL())
                                     .stopAndAdd(liftIn())
                                     .waitSeconds(.5)
-                                    //.stopAndAdd(downposition())
-                                    .waitSeconds(.5)
                                     .strafeTo((new Vector2d(60.5, 50)))
                                     .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
