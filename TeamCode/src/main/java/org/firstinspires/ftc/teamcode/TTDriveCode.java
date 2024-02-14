@@ -62,7 +62,7 @@ public class TTDriveCode extends LinearOpMode {
     double ClosedRight = 0.2;
     double OpenLeft = 0.2;
     double OpenRight = 0;
-    double GroundClaw = 0.025;
+    double GroundClaw = 0;
     double ScoringClaw = 0.62;
 
     //---------------Run OpMode-----------------------------//
@@ -142,25 +142,22 @@ public class TTDriveCode extends LinearOpMode {
 
             if (gamepad2.a)
             {
-              arm.setPower(1);
-            }
-            else {
-                arm.setPower(0);
+              tfil(1);
             }
 
             if (gamepad2.b)
             {
-                arm.setPower(-1);
-            }
-            else {
-                arm.setPower(0);
+                tfil(-1);
             }
 
             //Must be pressed before start of match
-            if (gamepad2.x)
+            if (gamepad1.x)
             {
                 gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+            if(gamepad2.x){
+                clawrotate.setPosition(GroundClaw);
             }
 
             //---------Airplane----------//
@@ -174,8 +171,14 @@ public class TTDriveCode extends LinearOpMode {
             //----------Claws & Claw Rotate----------//
 
             if (gamepad2.right_trigger > 0.5) {
-                clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
+                clawright.setPosition(ClosedRight);
+                sleep(200);
+                clawrotate.setPosition(ScoringClaw);
+                gearROT.setTargetPosition(75);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.4);
+
             }
 
             if (gamepad2.left_trigger > 0.5) {
@@ -194,21 +197,18 @@ public class TTDriveCode extends LinearOpMode {
             //--------------Arm-Presets---------------//
 
             if(gamepad2.right_stick_button){
-                tfilPosition(0, 0.8);
-                raegPosition(0, 1);
-                sleep(400);
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
+                sleep(400);
+                raegPosition(0, 0.25);
             }
 
             if(gamepad2.left_stick_button){
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
-                clawrotate.setPosition(ScoringClaw);
                 sleep(400);
-                raegPosition(590, 1);
-                tfilPosition(2050, 0.8);
+                raegPosition(640, 0.33);
             }
 
             //-----------Speed Control------------//
@@ -254,7 +254,7 @@ public class TTDriveCode extends LinearOpMode {
         gearROT.setTargetPosition(gearROT.getCurrentPosition() + 50 * s);
     }
     public void tfil (int s) {
-        arm.setPower(0.95);
+        arm.setPower(1);
         arm.setTargetPosition(arm.getCurrentPosition() + 100 * s);
     }
     public void fasttfil (int s) {
