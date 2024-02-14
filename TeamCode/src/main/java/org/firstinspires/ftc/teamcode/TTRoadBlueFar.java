@@ -44,7 +44,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 import java.util.concurrent.TimeUnit;
 
@@ -98,7 +97,7 @@ public class TTRoadBlueFar extends LinearOpMode{
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double ScoringClaw = 0.62;
+    double ScoringClaw = 0.61;
     double ScoringArm = 0.3;
     double OpenLeft = 0.2;
     double OpenRight = 0;
@@ -127,7 +126,6 @@ public class TTRoadBlueFar extends LinearOpMode{
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 
-        gearROT.setDirection(DcMotor.Direction.REVERSE);
         gearROT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -136,7 +134,6 @@ public class TTRoadBlueFar extends LinearOpMode{
 
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
-
 
         Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS); //from huskylens example
         rateLimit.expire();
@@ -170,111 +167,102 @@ public class TTRoadBlueFar extends LinearOpMode{
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
 
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 90 && blocks[i].id == 2) {
+                if (blocks[i].x < 90 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
+                                    .stopAndAdd(StartPos())
+                                    .waitSeconds(0.5)
+                                    .splineTo(new Vector2d(35,11),-1*Math.PI/2)
+                                    //.stopAndAdd(GearROT0())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(32,36))
-                                    .turn(PI/2)
-                                    .lineToY(17)
+                                    /*.strafeTo(new Vector2d(32, 36))
+                                    .turn(PI / 2)
+                                    .lineToY(17)*/
                                     .stopAndAdd(openR())
                                     .waitSeconds(0.5)
-                                    .lineToY(30)
-                                    .stopAndAdd(closeR())
+                                    .stopAndAdd(scoringPos())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(.5)
+                                   /* .lineToY(30)
                                     .waitSeconds(0.5)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(22.5,53))
-                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(0.5) */
+                                    .strafeTo(new Vector2d(22.5, 48))
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToY(43)
+                                    .lineToY(40)
                                     .stopAndAdd(liftIn())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
+                                    .strafeTo((new Vector2d(66, 54)))
+                                    .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(geardown())
-                                    .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60,57)))
-                                    .lineToY(60)
+                                    .stopAndAdd(GearROT0())
                                     .build());
                     sleep(400000);
                 }
 
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 2) {
+                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(35.5,15))
+                                    .stopAndAdd(StartPos())
+                                    .strafeTo(new Vector2d(36.5, 13))
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(40)
-                                    .turn(PI/2)
-                                    .stopAndAdd(closeR())
-                                    .waitSeconds(.5)
+                                    .turn(PI / 2)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(28,46))
-                                    .stopAndAdd(liftExtend2())
-                                    .waitSeconds(0.5)
+                                    .stopAndAdd(closeR())
+                                    .strafeTo(new Vector2d(27.5, 48))
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
                                     .lineToY(40)
-                                    .stopAndAdd(liftIn2())
-                                    .waitSeconds(.5)
                                     .stopAndAdd(closeL())
+                                    .stopAndAdd(liftIn())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(geardown())
+                                    .strafeTo((new Vector2d(60.5, 50)))
+                                    .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60,55)))
-                                    .lineToY(60)
+                                    .stopAndAdd(GearROT0())
+                                    .lineToY(56)
                                     .build());
                     sleep(400000);
                 }
                 //----------------------------3----------------------------\\
-                if (blocks[i].x > 180 && blocks[i].id == 2) {
+                if (blocks[i].x > 180 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
+                                    .stopAndAdd(StartPos())
+                                    .strafeTo(new Vector2d(29.5, 40))
                                     .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(39,26))
-                                    .waitSeconds(.5)
+                                    .turn(PI / 2)
                                     .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .lineToX(48)
-                                    .stopAndAdd(closeR())
-                                    .turn(PI/2)
+                                    .waitSeconds(.1)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(1) //test this value
-                                    .strafeTo(new Vector2d(33,56))
+                                    .strafeTo(new Vector2d(43.5, 48))
+                                    .stopAndAdd(closeR())
                                     .stopAndAdd(liftExtend())
-                                    .waitSeconds(0.5)
+                                    .waitSeconds(.25) //test this value
+                                    .lineToY(55)
                                     .stopAndAdd(openL())
-                                    .waitSeconds(.5)
+                                    .waitSeconds(.1)
                                     .lineToY(42)
+                                    .strafeTo((new Vector2d(67.5, 50)))
                                     .stopAndAdd(liftIn())
-                                    .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(geardown())
+                                    .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
-                                    .strafeTo((new Vector2d(60,57)))
-                                    .lineToY(60)
+                                    .stopAndAdd(GearROT0())
+                                    .lineToY(63)
+
                                     .build());
                     sleep(400000);
-
 
 
                 }
@@ -302,21 +290,51 @@ public class TTRoadBlueFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawrotate.setPosition(GroundClaw);
-                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gearROT.setTargetPosition(-400);
+                gearROT.setTargetPosition(-800);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.333);
-
-                while (gearROT.isBusy()) {
-                    sleep(25);
-                }
-
+                gearROT.setPower(0.5);
                 gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gearROT.setPower(0); return false;
+                gearROT.setPower(0);
+                return false;
             }
         };
     }
+    public Action geardownTEST(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(GroundClaw);
+                gearROT.setTargetPosition(200);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.4);
 
+                return false;
+            }
+        };
+    }
+    public Action StartPos(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+
+                gearROT.setTargetPosition(75);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.4);
+                clawrotate.setPosition(GroundClaw);
+                return false;
+            }
+        };
+    }
+    public Action GearROT0(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket){
+                gearROT.setPower(0);
+                return false;
+            }
+        };
+    }
     public Action liftIn(){
         return new Action() {
             @Override
@@ -365,17 +383,6 @@ public class TTRoadBlueFar extends LinearOpMode{
         };
     }
 
-    public Action scoreclaw(){
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawrotate.setPosition(ScoringArm);
-                return false;
-            }
-        };
-    }
-
-
     public Action openR(){
         return new Action() {
             @Override
@@ -420,17 +427,30 @@ public class TTRoadBlueFar extends LinearOpMode{
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawright.setPosition(ClosedRight);
                 clawrotate.setPosition(ScoringClaw);
-                gearROT.setTargetPosition(750);
+                gearROT.setTargetPosition(670);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.15);
+                gearROT.setPower(0.4);
                 return false;
             }
         };
     }
 
-
-
+//    public Action downposition(){
+//        return new Action() {
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+//                clawrotate.setPosition(GroundClaw);
+//                gearROT.setTargetPosition();
+//                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                gearROT.setPower(0.333);
+//                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                gearROT.setPower(0);
+//                return false;
+//            }
+//        };
+//    }
 
 
 

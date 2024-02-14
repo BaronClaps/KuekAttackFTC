@@ -44,7 +44,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 import java.util.concurrent.TimeUnit;
 
@@ -85,6 +84,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TTRoadRedFar extends LinearOpMode{
 
+    //---------------Declare Variables-----------------------//
     private final int READ_PERIOD = 1;
 
     private DcMotor arm = null;
@@ -93,41 +93,32 @@ public class TTRoadRedFar extends LinearOpMode{
     private Servo clawright = null; //es2
     private DcMotor gearROT = null;
 
-    //---------------Declare Variables-----------------------//
-    private double armR;
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
     double ClosedRight = 0.2;
-    double ScoringClaw = 0.62;
-    double ScoringArm = 0.3;
     double OpenLeft = 0.2;
     double OpenRight = 0;
-    double GroundClaw = 0.025;
-    double GroundArm = 0.0975;
+    double GroundClaw = 0;
+    double ScoringClaw = 0.59;
     private HuskyLens huskyLens;
-    //TODO add your other motors and sensors here
+
 
 
     @Override public void runOpMode() {
-        Pose2d beginPose = new Pose2d(-60,-36, 0);
+        Pose2d beginPose = new Pose2d(-60,12, 0);
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must match the names assigned during the robot configuration.
         // step (using the FTC Robot Controller app on the phone).
         arm = hardwareMap.get(DcMotor.class, "arm");
-        gearROT = hardwareMap.get(DcMotor.class, "gearROT");
         clawrotate = hardwareMap.get(Servo.class, "clawrotate");
         clawleft = hardwareMap.get(Servo.class, "clawleft");
         clawright = hardwareMap.get(Servo.class, "clawright");
+        gearROT = hardwareMap.get(DcMotor.class, "gearROT");
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
 
-        //TODO initialize the sensors and motors you added
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 
-        gearROT.setDirection(DcMotor.Direction.REVERSE);
         gearROT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -136,7 +127,6 @@ public class TTRoadRedFar extends LinearOpMode{
 
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
-
 
         Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS); //from huskylens example
         rateLimit.expire();
@@ -172,19 +162,13 @@ public class TTRoadRedFar extends LinearOpMode{
                 if (blocks[i].x < 100 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(-39,30))
-                                    .waitSeconds(.5)
+                                    .stopAndAdd(StartPos())
+                                    .strafeTo(new Vector2d(26, -48))
+                                    .turn(-1*PI/ 2)
                                     .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .lineToX(-48)
-                                    .stopAndAdd(closeR())
+                                    .waitSeconds(.25)
                                     .build());
-                                    sleep(400000);
+                    sleep(400000);
                 }
 
 
@@ -192,19 +176,30 @@ public class TTRoadRedFar extends LinearOpMode{
                 if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(-35.5,15))
+                                    .stopAndAdd(StartPos())
+                                    .strafeTo(new Vector2d(-36.5, 13))
                                     .stopAndAdd(openR())
-                                    .waitSeconds(.5)
-                                    .lineToX(-40)
-                                    .turn(-PI/2)
+                                    .waitSeconds(.1)
+                                    .stopAndAdd(scoringPos())
                                     .stopAndAdd(closeR())
+                                    .lineToX(-40)
+                                    .turn(-1*PI/2)
+                                    .strafeTo(new Vector2d(-27.5, 48))
+                                    .stopAndAdd(liftExtend())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.25)
+                                    .lineToY(40)
+                                    .stopAndAdd(closeL())
+                                    .stopAndAdd(liftIn())
+                                    .waitSeconds(.5)
+                                    .strafeTo((new Vector2d(-60.5, 50)))
+                                    .stopAndAdd(geardownTEST())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(GearROT0())
+                                    .lineToY(56)
                                     .build());
-                                    sleep(400000);
+                    sleep(400000);
                 }
 
 
@@ -212,19 +207,28 @@ public class TTRoadRedFar extends LinearOpMode{
                 if (blocks[i].x > 180 && blocks[i].id == 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(groundclaw())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(-30,-48))
-                                    .turn(-PI/2)
-                                    .lineToY(-36)
+                                    .stopAndAdd(StartPos())
+                                    .splineTo(new Vector2d(-29,11),-1*Math.PI/2)
+                                    .waitSeconds(.1)
                                     .stopAndAdd(openR())
-                                    .waitSeconds(0.5)
-                                    .strafeTo(new Vector2d(-25,-47.5))
-                                    .stopAndAdd(closeR())
+                                    .waitSeconds(.25)
+                                    .stopAndAdd(scoringPos())
+                                    .strafeTo(new Vector2d(-21.5, 48))
+                                    .waitSeconds(.25)
+                                    .stopAndAdd(openL())
+                                    .waitSeconds(.2)
+                                    .lineToY(40)
+                                    .stopAndAdd(closeL())
+                                    .strafeTo((new Vector2d(-66, 54)))
+                                    .waitSeconds(.25)
+                                    .stopAndAdd(geardownTEST())
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(GearROT0())
                                     .build());
-                                    sleep(400000);
+                    sleep(400000);
+
+
+
                 }
 
 
@@ -251,21 +255,51 @@ public class TTRoadRedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawrotate.setPosition(GroundClaw);
-                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gearROT.setTargetPosition(-400);
+                gearROT.setTargetPosition(-800);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.333);
-
-                while (gearROT.isBusy()) {
-                    sleep(25);
-                }
-
+                gearROT.setPower(0.5);
                 gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                gearROT.setPower(0); return false;
+                gearROT.setPower(0);
+                return false;
             }
         };
     }
+    public Action geardownTEST(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(GroundClaw);
+                gearROT.setTargetPosition(200);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.4);
 
+                return false;
+            }
+        };
+    }
+    public Action StartPos(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+
+                gearROT.setTargetPosition(75);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.4);
+                clawrotate.setPosition(GroundClaw);
+                return false;
+            }
+        };
+    }
+    public Action GearROT0(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket){
+                gearROT.setPower(0);
+                return false;
+            }
+        };
+    }
     public Action liftIn(){
         return new Action() {
             @Override
@@ -284,7 +318,7 @@ public class TTRoadRedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-500);
+                arm.setTargetPosition(-400);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
@@ -296,20 +330,9 @@ public class TTRoadRedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-500);
+                arm.setTargetPosition(-400);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
-                return false;
-            }
-        };
-    }
-
-
-    public Action openR(){
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawright.setPosition(OpenRight);
                 return false;
             }
         };
@@ -325,11 +348,11 @@ public class TTRoadRedFar extends LinearOpMode{
         };
     }
 
-    public Action scoreclaw(){
+    public Action openR(){
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawrotate.setPosition(ScoringArm);
+                clawright.setPosition(OpenRight);
                 return false;
             }
         };
@@ -370,15 +393,12 @@ public class TTRoadRedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawrotate.setPosition(ScoringClaw);
-                gearROT.setTargetPosition(750);
+                gearROT.setTargetPosition(670);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.15);
+                gearROT.setPower(0.4);
                 return false;
             }
         };
     }
-
-
-
 
 }
