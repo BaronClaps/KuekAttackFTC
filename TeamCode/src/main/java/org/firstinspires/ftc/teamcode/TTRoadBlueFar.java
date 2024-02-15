@@ -167,7 +167,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
 
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 90 && blocks[i].id == 1) {
+                if (blocks[i].x < 90 && blocks[i].id == 2) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
@@ -188,7 +188,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                                     .waitSeconds(0.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(0.5) */
-                                    .strafeTo(new Vector2d(22.5, 48))
+                                    .strafeTo(new Vector2d(22.5, 51))
                                     .waitSeconds(0.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
@@ -205,7 +205,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                 }
 
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
+                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 2) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
@@ -216,7 +216,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                                     .turn(PI / 2)
                                     .stopAndAdd(scoringPos())
                                     .stopAndAdd(closeR())
-                                    .strafeTo(new Vector2d(27.5, 48))
+                                    .strafeTo(new Vector2d(27.5, 51))
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(.5)
                                     .stopAndAdd(openL())
@@ -234,7 +234,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                     sleep(400000);
                 }
                 //----------------------------3----------------------------\\
-                if (blocks[i].x > 180 && blocks[i].id == 1) {
+                if (blocks[i].x > 180 && blocks[i].id == 2) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
@@ -244,7 +244,7 @@ public class TTRoadBlueFar extends LinearOpMode{
                                     .stopAndAdd(openR())
                                     .waitSeconds(.1)
                                     .stopAndAdd(scoringPos())
-                                    .strafeTo(new Vector2d(43.5, 48))
+                                    .strafeTo(new Vector2d(43.5, 51))
                                     .stopAndAdd(closeR())
                                     .stopAndAdd(liftExtend())
                                     .waitSeconds(.25) //test this value

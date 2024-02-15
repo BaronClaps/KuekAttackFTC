@@ -59,11 +59,11 @@ public class TTDriveCode extends LinearOpMode {
     private double armR;
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
-    double ClosedRight = 0.2;
-    double OpenLeft = 0.2;
+    double ClosedRight = 0.175;
+    double OpenLeft = 0.175;
     double OpenRight = 0;
-    double GroundClaw = 0;
-    double ScoringClaw = 0.62;
+    double GroundClaw = 0.155;
+    double ScoringClaw = 0.5;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -142,12 +142,12 @@ public class TTDriveCode extends LinearOpMode {
 
             if (gamepad2.a)
             {
-              tfil(1);
+              tfil(-1);
             }
 
             if (gamepad2.b)
             {
-                tfil(-1);
+                tfil(1);
             }
 
             //Must be pressed before start of match
@@ -201,7 +201,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
                 sleep(400);
-                raegPosition(0, 0.25);
+                raegPosition(0, 0.175);
             }
 
             if(gamepad2.left_stick_button){

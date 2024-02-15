@@ -160,7 +160,7 @@ public class TTRoadBlue extends LinearOpMode{
                 telemetry.addData("location?", blocks[i].x);// this gives you just x
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 100 && blocks[i].id == 1) {
+                if (blocks[i].x < 100 && blocks[i].id == 2) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
@@ -191,7 +191,7 @@ public class TTRoadBlue extends LinearOpMode{
 
 
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
+                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 2) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
@@ -222,25 +222,25 @@ public class TTRoadBlue extends LinearOpMode{
 
 
                 //----------------------------3---------------------------\\
-                if (blocks[i].x > 180 && blocks[i].id == 1) {
+                if (blocks[i].x > 180 && blocks[i].id == 2) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
-                                    .splineTo(new Vector2d(-29,11),-1*Math.PI/2)
-                                    .waitSeconds(.1)
+                                    .splineTo(new Vector2d(-29,11),3*Math.PI/2)
+                                    .waitSeconds(1.2)
                                     .stopAndAdd(openR())
-                                    .waitSeconds(.25)
+                                    .waitSeconds(1.25)
                                     .stopAndAdd(scoringPos())
                                     .strafeTo(new Vector2d(-21.5, 48))
-                                    .waitSeconds(.25)
+                                    .waitSeconds(1.25)
                                     .stopAndAdd(openL())
-                                    .waitSeconds(.2)
+                                    .waitSeconds(1.2)
                                     .lineToY(40)
                                     .stopAndAdd(closeL())
                                     .strafeTo((new Vector2d(-66, 54)))
-                                    .waitSeconds(.25)
+                                    .waitSeconds(1.25)
                                     .stopAndAdd(geardownTEST())
-                                    .waitSeconds(.5)
+                                    .waitSeconds(1.5)
                                     .stopAndAdd(GearROT0())
                                     .build());
                     sleep(400000);
