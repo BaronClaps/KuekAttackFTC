@@ -96,13 +96,11 @@ public class TTRoadBlueFar extends LinearOpMode{
     private double armR;
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
-    double ClosedRight = 0.2;
-    double ScoringClaw = 0.61;
-    double ScoringArm = 0.3;
-    double OpenLeft = 0.2;
+    double ClosedRight = 0.175;
+    double OpenLeft = 0.175;
     double OpenRight = 0;
-    double GroundClaw = 0.025;
-    double GroundArm = 0.0975;
+    double GroundClaw = 0.1175;
+    double ScoringClaw = 0.7;
     private HuskyLens huskyLens;
     //TODO add your other motors and sensors here
 

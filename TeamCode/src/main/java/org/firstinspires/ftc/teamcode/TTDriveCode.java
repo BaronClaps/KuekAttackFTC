@@ -62,8 +62,8 @@ public class TTDriveCode extends LinearOpMode {
     double ClosedRight = 0.175;
     double OpenLeft = 0.175;
     double OpenRight = 0;
-    double GroundClaw = 0.155;
-    double ScoringClaw = 0.5;
+    double GroundClaw = 0.1175;
+    double ScoringClaw = 0.7;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -87,10 +87,9 @@ public class TTDriveCode extends LinearOpMode {
         gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         gearROT.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         arm.setTargetPosition(0);
-        gearROT.setTargetPosition(0);
+        gearROT.setTargetPosition(13);
         //---------------Setup Servos-----------------------//
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
@@ -175,7 +174,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawright.setPosition(ClosedRight);
                 sleep(200);
                 clawrotate.setPosition(ScoringClaw);
-                gearROT.setTargetPosition(75);
+                gearROT.setTargetPosition(50);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.4);
 
@@ -200,15 +199,17 @@ public class TTDriveCode extends LinearOpMode {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
+                tfilPosition(0,1);
                 sleep(400);
-                raegPosition(0, 0.175);
+                raegPosition(0, 0.125);
             }
 
             if(gamepad2.left_stick_button){
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
+                clawrotate.setPosition(ScoringClaw);
                 sleep(400);
-                raegPosition(640, 0.33);
+                raegPosition(630, 0.33);
             }
 
             //-----------Speed Control------------//

@@ -97,13 +97,11 @@ public class TTRoadRed extends LinearOpMode{
     private double armR;
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0;
-    double ClosedRight = 0.2;
-    double ScoringClaw = 0.61;
-    double ScoringArm = 0.3;
-    double OpenLeft = 0.2;
+    double ClosedRight = 0.175;
+    double OpenLeft = 0.175;
     double OpenRight = 0;
-    double GroundClaw = 0.025;
-    double GroundArm = 0.0975;
+    double GroundClaw = 0.1175;
+    double ScoringClaw = 0.7;
     private HuskyLens huskyLens;
     //TODO add your other motors and sensors here
 
@@ -210,22 +208,22 @@ public class TTRoadRed extends LinearOpMode{
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
-                                    .strafeTo(new Vector2d(36.5, 13))
+                                    .strafeTo(new Vector2d(37, 13))
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .lineToX(40)
                                     .turn(PI / 2)
                                     .stopAndAdd(scoringPos())
                                     .stopAndAdd(closeR())
-                                    .strafeTo(new Vector2d(27.5, 48))
                                     .stopAndAdd(liftExtend())
+                                    .waitSeconds(.5)
+                                    .strafeTo(new Vector2d(27.5, 48))
                                     .waitSeconds(.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
                                     .lineToY(40)
                                     .stopAndAdd(closeL())
                                     .stopAndAdd(liftIn())
-                                    .waitSeconds(.5)
                                     .strafeTo((new Vector2d(60.5, 50)))
                                     .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
@@ -317,8 +315,6 @@ public class TTRoadRed extends LinearOpMode{
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-
-
                 gearROT.setTargetPosition(75);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.4);
@@ -430,7 +426,7 @@ public class TTRoadRed extends LinearOpMode{
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawright.setPosition(ClosedRight);
                 clawrotate.setPosition(ScoringClaw);
-                gearROT.setTargetPosition(670);
+                gearROT.setTargetPosition(630);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.4);
                 return false;
