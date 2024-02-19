@@ -168,10 +168,8 @@ public class TTRoadBlueFar extends LinearOpMode{
                 if (blocks[i].x < 100 && blocks[i].id ==2 && blocks[i].y <200) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(StartPos())//lower pivot
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(5.5)
+                                    .stopAndAdd(StartPos())//sets up the arm
+                                    .waitSeconds(1)
                                     .setTangent(0)
                                     .splineTo(new Vector2d(-28,-30.3),Math.PI/2)//drive to spike mark
                                     .stopAndAdd(openL())//score purple
@@ -190,8 +188,8 @@ public class TTRoadBlueFar extends LinearOpMode{
                                     .lineToY(-40)
                                     .strafeTo(new Vector2d(-5,-40))//line up to go back
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(52)//drive to backboard
-                                    .strafeTo(new Vector2d(-31.8,54.5))//strafe to score
+                                    .lineToYConstantHeading(50)//drive to backboard
+                                    .strafeTo(new Vector2d(-31.8,55))//strafe to score
                                     .waitSeconds(.5)
                                     .stopAndAdd(liftIn())
                                     .stopAndAdd(scoringPos())
@@ -218,9 +216,8 @@ public class TTRoadBlueFar extends LinearOpMode{
                 if (blocks[i].x > 100 && blocks[i].x < 200 && blocks[i].id ==2 && blocks[i].y <200) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(StartPos())//lower pivot
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(5.5)
+                                    .stopAndAdd(StartPos())//sets up the arm
+                                    .waitSeconds(1)
                                     .setTangent(0)
                                     .strafeTo(new Vector2d(-37.4, -27))
                                     .stopAndAdd(openL())//score purple
@@ -266,14 +263,11 @@ public class TTRoadBlueFar extends LinearOpMode{
 
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(StartPos())//lower pivot
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(geardown())//arm down
-                                    .waitSeconds(5)
+                                    .stopAndAdd(StartPos())//sets up the arm
+                                    .waitSeconds(1)
                                     .strafeTo(new Vector2d(-35,-28.75))
                                     .turnTo(Math.toRadians(270))
                                     .stopAndAdd(openL())//score purple
-                                    //.waitSeconds(.5)
                                     .stopAndAdd(GearUpLittle())
                                     .stopAndAdd(whitePixelPickup())
                                     .waitSeconds(.1)
@@ -371,7 +365,7 @@ public class TTRoadBlueFar extends LinearOpMode{
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                gearROT.setTargetPosition(75);
+                gearROT.setTargetPosition(150);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.4);
                 clawrotate.setPosition(GroundClaw);
@@ -450,7 +444,7 @@ public class TTRoadBlueFar extends LinearOpMode{
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawright.setPosition(OpenRight);
+                clawrotate.setPosition(GroundClaw);
                 return false;
             }
         };

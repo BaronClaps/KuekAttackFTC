@@ -58,8 +58,8 @@ public class TTDriveCode extends LinearOpMode {
     private double lbspeed;
     private double armR;
     //---------------Declare Servo Variables-----------------//
-    double ClosedLeft = 0;
-    double ClosedRight = 0.175;
+    double ClosedLeft = 0.015;
+    double ClosedRight = 0.16;
     double OpenLeft = 0.175;
     double OpenRight = 0;
     double GroundClaw = 0.1175;
@@ -173,16 +173,18 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(ClosedLeft);
                 clawright.setPosition(ClosedRight);
                 sleep(200);
+                raegPosition(50,0.33);
                 clawrotate.setPosition(ScoringClaw);
-                gearROT.setTargetPosition(50);
-                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.4);
 
             }
 
             if (gamepad2.left_trigger > 0.5) {
                 clawright.setPosition(OpenRight);
                 clawleft.setPosition(OpenLeft);
+            }
+            if(gamepad2.right_bumper){
+                clawright.setPosition(ClosedRight);
+                clawleft.setPosition(ClosedLeft);
             }
 
             //Below are weird due to manual control whilst we score backwards
