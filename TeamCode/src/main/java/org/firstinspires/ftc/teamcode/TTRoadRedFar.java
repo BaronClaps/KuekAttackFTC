@@ -100,7 +100,7 @@ public class TTRoadRedFar extends LinearOpMode{
     double OpenRight = 0;
     double GroundClaw = 0.1175;
     double ScoringClaw = 0.7;
-    double WhitePixelPickUpClaw = 0.06;
+    double WhitePixelPickUpClaw = 0.055;
     private HuskyLens huskyLens;
 
     @Override public void runOpMode() {
@@ -273,7 +273,7 @@ public class TTRoadRedFar extends LinearOpMode{
                                     //.waitSeconds(.5)
                                     .stopAndAdd(whitePixelPickup())
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(8, -45.5),Math.toRadians(270))//line up with white stack
+                                    .splineTo(new Vector2d(8.5, -45.5),Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.5)
                                     .lineToYConstantHeading(-52)//forward into white
                                     .waitSeconds(.5)

@@ -58,8 +58,8 @@ public class TTDriveCode extends LinearOpMode {
     private double lbspeed;
     private double armR;
     //---------------Declare Servo Variables-----------------//
-    double ClosedLeft = 0.015;
-    double ClosedRight = 0.16;
+    double ClosedLeft = 0.03;
+    double ClosedRight = 0.145;
     double OpenLeft = 0.175;
     double OpenRight = 0;
     double GroundClaw = 0.1175;
