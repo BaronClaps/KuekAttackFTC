@@ -94,13 +94,13 @@ public class TTRoadRedFar extends LinearOpMode{
     private Servo clawright = null; //es2
     private DcMotor gearROT = null;
     //---------------Declare Servo Variables-----------------//
-    double ClosedLeft = 0;
-    double ClosedRight = 0.175;
+    double ClosedLeft = 0.015;
+    double ClosedRight = 0.16;
     double OpenLeft = 0.175;
     double OpenRight = 0;
     double GroundClaw = 0.1175;
     double ScoringClaw = 0.7;
-    double WhitePixelPickUpClaw = 0.07;
+    double WhitePixelPickUpClaw = 0.06;
     private HuskyLens huskyLens;
 
     @Override public void runOpMode() {
@@ -265,42 +265,43 @@ public class TTRoadRedFar extends LinearOpMode{
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())//lower pivot
                                     .waitSeconds(1)
-                                    .strafeTo(new Vector2d(42,-42.5))
+                                    .strafeTo(new Vector2d(40,-45))
                                     .stopAndAdd(openL())//score purple
                                     .waitSeconds(.5)
-                                    .stopAndAdd(GearUpLittle())
                                     //.waitSeconds(.5)
                                     .strafeTo(new Vector2d(54,-30))
                                     //.waitSeconds(.5)
                                     .stopAndAdd(whitePixelPickup())
                                     // .splineToSplineHeading(new Pose2d(-12,-48,0),Math.toRadians(180))
-                                    .splineTo(new Vector2d(7.8, -45),Math.toRadians(270))//line up with white stack
+                                    .splineTo(new Vector2d(8, -45.5),Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(-50)//forward into white
+                                    .lineToYConstantHeading(-52)//forward into white
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())//pick up white
                                     .waitSeconds(.5)
                                     .lineToY(-40)
+                                    .stopAndAdd(StartPos())
                                     .strafeTo(new Vector2d(7.5,-40))//line up to go back
                                     .waitSeconds(.5)
                                     .lineToYConstantHeading(46)//drive to backboard
-                                    .strafeTo(new Vector2d(29,46))//strafe to score
+                                    .strafeTo(new Vector2d(41,45))//strafe to score
                                     .waitSeconds(.5)
-                                    .stopAndAdd(liftIn())
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(57.5)//back all the way up
-                                    .waitSeconds(3)
+                                    .lineToYConstantHeading(58)//back all the way up
+                                    .waitSeconds(0.5)
                                     .stopAndAdd(openR())//score Yellow
                                     .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(29,61))
-                                    .waitSeconds(.8)
-                                    .stopAndAdd(openL())//score White
+                                    .stopAndAdd(closeR())
+                                    .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(57)
-                                    .stopAndAdd(liftIn())
+                                    .lineToY(40)
+                                    .stopAndAdd(closeR())
+                                    .strafeTo((new Vector2d(70, 54)))
                                     .stopAndAdd(geardownTEST())
-                                    .strafeTo(new Vector2d(9,55))
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(GearROT0())
+                                    .lineToY(63)
                                     .build());
                     sleep(400000);
                 }
@@ -313,6 +314,9 @@ public class TTRoadRedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawrotate.setPosition(WhitePixelPickUpClaw);
+                gearROT.setTargetPosition(150);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.33);
                 return false;
             }
         };
@@ -363,8 +367,20 @@ public class TTRoadRedFar extends LinearOpMode{
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 gearROT.setTargetPosition(75);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.4);
+                gearROT.setPower(0.33);
                 clawrotate.setPosition(GroundClaw);
+                return false;
+            }
+        };
+    }
+    public Action EndingPos(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gearROT.setTargetPosition(75);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.3);
+                clawrotate.setPosition(ScoringClaw);
                 return false;
             }
         };
@@ -373,7 +389,7 @@ public class TTRoadRedFar extends LinearOpMode{
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                gearROT.setTargetPosition(120);
+                gearROT.setTargetPosition(190);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.4);
                 clawrotate.setPosition(GroundClaw);
