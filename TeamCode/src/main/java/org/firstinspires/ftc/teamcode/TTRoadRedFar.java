@@ -188,7 +188,6 @@ public class TTRoadRedFar extends LinearOpMode{
                                     .lineToYConstantHeading(51)//drive to backboard
                                     .strafeTo(new Vector2d(29,53))//strafe to score
                                     .waitSeconds(.2)
-                                    .stopAndAdd(liftIn())
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(.6)
                                     .lineToYConstantHeading(59)//back all the way up
@@ -217,13 +216,13 @@ public class TTRoadRedFar extends LinearOpMode{
                                     .stopAndAdd(StartPos())//lower pivot
                                     .waitSeconds(1)
                                     .setTangent(0)
-                                    .strafeTo(new Vector2d(36.5, -29))
+                                    .strafeTo(new Vector2d(37, -29))
                                     .stopAndAdd(openL())//score purple
                                     .waitSeconds(.4)
                                     .strafeTo(new Vector2d(54, -32))//back away from purple
                                     .waitSeconds(.4)
                                     .stopAndAdd(whitePixelPickup2())
-                                    .splineTo(new Vector2d(30.5, -48), Math.toRadians(270))//line up with white stack
+                                    .splineTo(new Vector2d(30.5, -48.35), Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.5)
                                     .lineToYConstantHeading(-51.5)//forward into white
                                     .waitSeconds(.5)
@@ -242,8 +241,10 @@ public class TTRoadRedFar extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(openR())//score yellow
                                     .stopAndAdd(openL())//score white
+                                    .stopAndAdd(liftExtend2())
                                     .waitSeconds(.5)
                                     .lineToYConstantHeading(57)
+                                    .stopAndAdd(liftIn2())
                                     .strafeTo(new Vector2d(9,56))
                                     .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
@@ -281,6 +282,7 @@ public class TTRoadRedFar extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .lineToYConstantHeading(58)//back all the way up
                                     .waitSeconds(0.5)
+                                    .stopAndAdd(liftExtend2())
                                     .stopAndAdd(openR())//score Yellow
                                     .waitSeconds(.5)
                                     .stopAndAdd(openL())
@@ -288,6 +290,7 @@ public class TTRoadRedFar extends LinearOpMode{
                                     .lineToY(40)
                                     .stopAndAdd(closeR())
                                     .stopAndAdd(closeL())
+                                    .stopAndAdd(liftIn2())
                                     .strafeTo((new Vector2d(75, 54)))
                                     .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
@@ -415,6 +418,19 @@ public class TTRoadRedFar extends LinearOpMode{
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 arm.setTargetPosition(600);
+                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                arm.setPower(1);
+                return false;
+            }
+        };
+    }
+
+    public Action liftIn2(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                arm.setTargetPosition(200);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(1);
                 return false;
