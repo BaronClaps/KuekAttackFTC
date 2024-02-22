@@ -93,7 +93,6 @@ public class TTDriveCode extends LinearOpMode {
         //---------------Setup Servos-----------------------//
         clawright.setPosition(ClosedRight);
         clawleft.setPosition(ClosedLeft);
-        clawrotate.setPosition(GroundClaw);
         bspeed = 2;
         //---------------Wait until Play-----------------------//
         telemetry.addData("Status", "Initialized");
