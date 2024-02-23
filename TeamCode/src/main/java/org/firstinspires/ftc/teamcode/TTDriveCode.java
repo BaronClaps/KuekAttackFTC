@@ -224,10 +224,10 @@ public class TTDriveCode extends LinearOpMode {
             }
 
             if (bspeed == 1) {
-                lfspeed = leftFrontPower / 2;
-                rfspeed = rightFrontPower / 2;
-                lbspeed = leftBackPower / 2;
-                rbspeed = rightBackPower / 2;
+                lfspeed = leftFrontPower / 3;
+                rfspeed = rightFrontPower / 3;
+                lbspeed = leftBackPower / 3;
+                rbspeed = rightBackPower / 3;
             }
 
             if (bspeed == 2) {
