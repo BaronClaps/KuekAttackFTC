@@ -180,7 +180,7 @@ public class TTRoadRed extends LinearOpMode{
                                     .waitSeconds(0.5)
                                     .stopAndAdd(scoringPos())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(liftExtend())
+                                    .stopAndAdd(liftExtend2())
                                     .waitSeconds(.5)
                                    /* .lineToY(30)
                                     .waitSeconds(0.5)
@@ -191,7 +191,7 @@ public class TTRoadRed extends LinearOpMode{
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
                                     .lineToY(40)
-                                    .stopAndAdd(liftIn())
+                                    .stopAndAdd(liftIn2())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeL())
                                     .strafeTo((new Vector2d(66, 54)))
@@ -214,15 +214,15 @@ public class TTRoadRed extends LinearOpMode{
                                     .turn(PI / 2)
                                     .stopAndAdd(scoringPos())
                                     .stopAndAdd(closeR())
-                                    .stopAndAdd(liftExtend())
+                                    .stopAndAdd(liftExtend2())
                                     .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(27.5, 48))
+                                    .strafeTo(new Vector2d(27, 48))
                                     .waitSeconds(.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
                                     .lineToY(40)
                                     .stopAndAdd(closeL())
-                                    .stopAndAdd(liftIn())
+                                    .stopAndAdd(liftIn2())
                                     .strafeTo((new Vector2d(60.5, 50)))
                                     .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
@@ -349,7 +349,7 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-400);
+                arm.setTargetPosition(-200);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;
@@ -361,7 +361,7 @@ public class TTRoadRed extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-400);
+                arm.setTargetPosition(200);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(0.7);
                 return false;

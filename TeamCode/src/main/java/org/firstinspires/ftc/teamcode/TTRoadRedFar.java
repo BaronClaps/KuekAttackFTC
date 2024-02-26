@@ -221,7 +221,7 @@ public class TTRoadRedFar extends LinearOpMode{
                                     .waitSeconds(.4)
                                     .strafeTo(new Vector2d(54, -32))//back away from purple
                                     .waitSeconds(.4)
-                                    .stopAndAdd(whitePixelPickup2())
+                                    .stopAndAdd(whitePixelPickup())
                                     .splineTo(new Vector2d(30.5, -48.35), Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.5)
                                     .lineToYConstantHeading(-51.5)//forward into white
@@ -310,7 +310,7 @@ public class TTRoadRedFar extends LinearOpMode{
                 clawrotate.setPosition(WhitePixelPickUpClaw);
                 gearROT.setTargetPosition(150);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.33);
+                gearROT.setPower(0.5);
                 return false;
             }
         };
@@ -322,7 +322,7 @@ public class TTRoadRedFar extends LinearOpMode{
                 clawrotate.setPosition(WhitePixelPickUpClaw);
                 gearROT.setTargetPosition(140);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.33);
+                gearROT.setPower(0.5);
                 return false;
             }
         };

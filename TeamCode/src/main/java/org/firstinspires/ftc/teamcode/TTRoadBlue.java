@@ -164,21 +164,22 @@ public class TTRoadBlue extends LinearOpMode{
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
-                                    .strafeTo(new Vector2d(-26, 39.5))
+                                    .waitSeconds(1)
+                                    .strafeTo(new Vector2d(-26, 38.5))
                                     .turn(-1*PI/ 2)
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeR())
                                     .stopAndAdd(scoringPos())
-                                    .strafeTo(new Vector2d(-43.5, 48))
-                                    .stopAndAdd(liftExtend())
+                                    .stopAndAdd(liftExtend2())
+                                    .strafeTo(new Vector2d(-45, 48))
                                     .waitSeconds(.25) //test this value
                                     .lineToY(55)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.1)
                                     .lineToY(43)
                                     .strafeTo((new Vector2d(-67.5, 50)))
-                                    .stopAndAdd(liftIn())
+                                    .stopAndAdd(liftIn2())
                                     .stopAndAdd(closeL())
                                     .waitSeconds(.5)
                                     .stopAndAdd(geardownTEST())
@@ -195,6 +196,7 @@ public class TTRoadBlue extends LinearOpMode{
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
+                                    .waitSeconds(1)
                                     .strafeTo(new Vector2d(-37.5, 13))
                                     .stopAndAdd(openR())
                                     .waitSeconds(.1)
@@ -226,17 +228,18 @@ public class TTRoadBlue extends LinearOpMode{
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
-                                    .splineTo(new Vector2d(-30,11),-1*Math.PI/2)
+                                    .waitSeconds(1)
+                                    .splineTo(new Vector2d(-31.5,11),-1*Math.PI/2)
                                     .waitSeconds(.5)
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeR())
                                     .waitSeconds(.125)
                                     .stopAndAdd(scoringPos())
-                                    .strafeTo(new Vector2d(-21.5, 48))
-                                    .waitSeconds(1.25)
+                                    .strafeTo(new Vector2d(-22, 48))
+                                    .waitSeconds(.5)
                                     .stopAndAdd(openL())
-                                    .waitSeconds(1.2)
+                                    .waitSeconds(.25)
                                     .lineToY(40)
                                     .stopAndAdd(closeL())
                                     .strafeTo((new Vector2d(-66, 54)))
@@ -336,7 +339,7 @@ public class TTRoadBlue extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-200);
+                arm.setTargetPosition(-300);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(1);
                 return false;
@@ -348,7 +351,7 @@ public class TTRoadBlue extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(200);
+                arm.setTargetPosition(300);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 arm.setPower(1);
                 return false;

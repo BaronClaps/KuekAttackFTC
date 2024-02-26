@@ -200,6 +200,8 @@ public class TTDriveCode extends LinearOpMode {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
+                tfilPosition(arm.getCurrentPosition()+200,1 );
+                sleep(400);
                 tfilPosition(0,1);
                 sleep(400);
                 raegPosition(0, 0.125);
@@ -224,17 +226,17 @@ public class TTDriveCode extends LinearOpMode {
             }
 
             if (bspeed == 1) {
-                lfspeed = leftFrontPower / 3;
-                rfspeed = rightFrontPower / 3;
-                lbspeed = leftBackPower / 3;
-                rbspeed = rightBackPower / 3;
+                lfspeed = leftFrontPower / 1.8;
+                rfspeed = rightFrontPower / 1.8;
+                lbspeed = leftBackPower / 1.8;
+                rbspeed = rightBackPower / 1.8;
             }
 
             if (bspeed == 2) {
-                lfspeed = leftFrontPower;
-                rfspeed = rightFrontPower;
-                lbspeed = leftBackPower;
-                rbspeed = rightBackPower;
+                lfspeed = leftFrontPower/1.25;
+                rfspeed = rightFrontPower/1.25;
+                lbspeed = leftBackPower/1.25;
+                rbspeed = rightBackPower/1.25;
             }
 
             leftFrontDrive.setPower(lfspeed);
