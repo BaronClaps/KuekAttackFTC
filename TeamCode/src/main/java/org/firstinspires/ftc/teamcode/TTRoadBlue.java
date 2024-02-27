@@ -166,7 +166,7 @@ public class TTRoadBlue extends LinearOpMode{
                                     .stopAndAdd(StartPos())
                                     .waitSeconds(1)
                                     .strafeTo(new Vector2d(-26, 38.5))
-                                    .turn(-1*PI/ 2)
+                                    .turn(-1*PI/2)
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
                                     .stopAndAdd(closeR())
@@ -192,12 +192,12 @@ public class TTRoadBlue extends LinearOpMode{
 
 
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 2) {
+                if (blocks[i].x > 100 && blocks[i].x < 180 && blocks[i].id == 2) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
                                     .waitSeconds(1)
-                                    .strafeTo(new Vector2d(-37.5, 13))
+                                    .strafeTo(new Vector2d(-35.5, 13))
                                     .stopAndAdd(openR())
                                     .waitSeconds(.1)
                                     .stopAndAdd(scoringPos())
@@ -233,9 +233,9 @@ public class TTRoadBlue extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(openR())
                                     .waitSeconds(.5)
-                                    .stopAndAdd(closeR())
-                                    .waitSeconds(.125)
                                     .stopAndAdd(scoringPos())
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(closeR())
                                     .strafeTo(new Vector2d(-22, 48))
                                     .waitSeconds(.5)
                                     .stopAndAdd(openL())

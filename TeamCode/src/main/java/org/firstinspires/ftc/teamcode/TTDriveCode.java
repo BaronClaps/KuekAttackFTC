@@ -63,7 +63,7 @@ public class TTDriveCode extends LinearOpMode {
     double OpenLeft = 0.175;
     double OpenRight = 0;
     double GroundClaw = 0.1175;
-    double ScoringClaw = 0.7;
+    double ScoringClaw = 0.69;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -212,7 +212,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(ScoringClaw);
                 sleep(400);
-                raegPosition(630, 0.33);
+                raegPosition(610, 0.33);
             }
 
             //-----------Speed Control------------//
@@ -226,10 +226,10 @@ public class TTDriveCode extends LinearOpMode {
             }
 
             if (bspeed == 1) {
-                lfspeed = leftFrontPower / 1.8;
-                rfspeed = rightFrontPower / 1.8;
-                lbspeed = leftBackPower / 1.8;
-                rbspeed = rightBackPower / 1.8;
+                lfspeed = leftFrontPower / 2;
+                rfspeed = rightFrontPower / 2;
+                lbspeed = leftBackPower / 2;
+                rbspeed = rightBackPower / 2;
             }
 
             if (bspeed == 2) {
