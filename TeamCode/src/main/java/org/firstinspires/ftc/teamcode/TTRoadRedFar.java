@@ -30,6 +30,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Math.PI;
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -94,17 +96,17 @@ public class TTRoadRedFar extends LinearOpMode{
     private Servo clawright = null; //es2
     private DcMotor gearROT = null;
     //---------------Declare Servo Variables-----------------//
-    double ClosedLeft = 0.015;
-    double ClosedRight = 0.16;
-    double OpenLeft = 0.16;
-    double OpenRight = 0.015;
+    double ClosedLeft = 0.03;
+    double ClosedRight = 0.145;
+    double OpenLeft = 0.175;
+    double OpenRight = 0;
     double GroundClaw = 0.1175;
     double ScoringClaw = 0.7;
-    double WhitePixelPickUpClaw = 0.055;
+    double WhitePixelPickUpClaw = 0.0615;
     private HuskyLens huskyLens;
 
     @Override public void runOpMode() {
-        Pose2d beginPose = new Pose2d(60, -30, Math.toRadians(180));
+        Pose2d beginPose = new Pose2d(60, -36, Math.toRadians(180));
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -173,25 +175,24 @@ public class TTRoadRedFar extends LinearOpMode{
                                     .waitSeconds(.5)
                                     .stopAndAdd(whitePixelPickup())
                                     .waitSeconds(.5)
-                                    .lineToYLinearHeading(-34,2*Math.PI/2.5)//back up
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(whitePixelPickup())
-                                    .splineTo(new Vector2d(7.5, -47),Math.toRadians(270))//line up with white stack
+                                    .lineToYLinearHeading(-36,2*Math.PI/2.5)//back up
+                                    .waitSeconds(.1)
+                                    .splineTo(new Vector2d(7.1, -47),Math.toRadians(270))//line up with white stack
                                     .waitSeconds(.1)
                                     .lineToYConstantHeading(-53)//forward into white
                                     .waitSeconds(.1)
-                                    .stopAndAdd(closeL())//pick up white
+                                    .stopAndAdd(closeR())//pick up white
                                     .waitSeconds(.5)
                                     .lineToY(-42)
                                     .strafeTo(new Vector2d(5.5,-40))//line up to go back
                                     .waitSeconds(.22)
-                                    .lineToYConstantHeading(46)//drive to backboard
-                                    .strafeTo(new Vector2d(39,45))//strafe to score
+                                    .lineToYConstantHeading(42)//drive to backboard
+                                    .strafeTo(new Vector2d(39,42))//strafe to score
                                     .waitSeconds(.2)
                                     .stopAndAdd(scoringPos())
                                     .stopAndAdd(liftExtend2())
                                     .waitSeconds(.6)
-                                    .lineToYConstantHeading(58)//back all the way up
+                                    .lineToYConstantHeading(44)//back all the way up
                                     .waitSeconds(1.2)
                                     .stopAndAdd(openL())//score white
                                     .stopAndAdd(openR())//score yellow
@@ -255,44 +256,34 @@ public class TTRoadRedFar extends LinearOpMode{
                 if (blocks[i].x < 100 && blocks[i].id== 1) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(StartPos())//lower pivot
-                                    .waitSeconds(1)
-                                    .strafeTo(new Vector2d(40,-45))
-                                    .stopAndAdd(openL())//score purple
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(54,-30))
-                                    .stopAndAdd(whitePixelPickup())
-                                    .splineTo(new Vector2d(9.3, -45.5),Math.toRadians(270))
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(-52)//forward into white
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(closeL())//pick up white
-                                    .waitSeconds(.5)
-                                    .lineToY(-40)
                                     .stopAndAdd(StartPos())
-                                    .strafeTo(new Vector2d(7.5,-40))//line up to go back
+                                    .strafeTo(new Vector2d(30, -58.5))
                                     .waitSeconds(.5)
-                                    .lineToYConstantHeading(46)//drive to backboard
-                                    .strafeTo(new Vector2d(41,45))//strafe to score
+                                    .turn(1*PI)
+                                    .stopAndAdd(openR())
+                                    .waitSeconds(.1)
+                                    .stopAndAdd(closeR())
                                     .waitSeconds(.5)
+                                    .strafeTo(new Vector2d(12,-58.5))
+                                    .waitSeconds(.1)
+                                    .turn(-3*PI/2)
+                                    .waitSeconds(.1)
+                                    .strafeTo(new Vector2d(12,36))
+                                    .waitSeconds(.1)
                                     .stopAndAdd(scoringPos())
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(58)//back all the way up
+                                    .strafeTo(new Vector2d(22.5, 48))
                                     .waitSeconds(0.5)
-                                    .stopAndAdd(liftExtend2())
-                                    .stopAndAdd(openR())//score Yellow
-                                    .waitSeconds(.5)
                                     .stopAndAdd(openL())
                                     .waitSeconds(.5)
                                     .lineToY(40)
-                                    .stopAndAdd(closeR())
-                                    .stopAndAdd(closeL())
                                     .stopAndAdd(liftIn2())
-                                    .strafeTo((new Vector2d(75, 54)))
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(closeL())
+                                    .stopAndAdd(closeR())
+                                    .strafeTo((new Vector2d(66, 54)))
                                     .stopAndAdd(geardownTEST())
                                     .waitSeconds(.5)
                                     .stopAndAdd(GearROT0())
-                                    .lineToY(63)
                                     .build());
                     sleep(400000);
                 }
@@ -307,7 +298,7 @@ public class TTRoadRedFar extends LinearOpMode{
                 clawrotate.setPosition(WhitePixelPickUpClaw);
                 gearROT.setTargetPosition(140);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.5);
+                gearROT.setPower(0.66);
                 return false;
             }
         };
@@ -317,9 +308,9 @@ public class TTRoadRedFar extends LinearOpMode{
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawrotate.setPosition(WhitePixelPickUpClaw);
-                gearROT.setTargetPosition(140);
+                gearROT.setTargetPosition(134);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.5);
+                gearROT.setPower(0.66);
                 return false;
             }
         };
@@ -503,7 +494,7 @@ public class TTRoadRedFar extends LinearOpMode{
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 clawright.setPosition(ClosedRight);
                 clawrotate.setPosition(ScoringClaw);
-                gearROT.setTargetPosition(630);
+                gearROT.setTargetPosition(690);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.4);
                 return false;

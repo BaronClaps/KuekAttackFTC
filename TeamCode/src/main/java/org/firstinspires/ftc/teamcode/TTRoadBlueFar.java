@@ -30,6 +30,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Math.PI;
+
 import  androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -100,18 +102,19 @@ public class TTRoadBlueFar extends LinearOpMode{
     private DcMotor gearROT = null;
 
     //---------------Declare Servo Variables-----------------//
-    double ClosedLeft = 0;
-    double ClosedRight = 0.175;
+    double ClosedLeft = 0.03;
+    double ClosedRight = 0.145;
     double OpenLeft = 0.175;
     double OpenRight = 0;
     double GroundClaw = 0.1175;
     double ScoringClaw = 0.7;
-    double WhiteClaw = 0.05;
+
+    double WhitePixelPickUpClaw = 0.055;
     private HuskyLens huskyLens;
 
 
     @Override public void runOpMode() {
-        Pose2d beginPose = new Pose2d(-60, -30, 0); //Pose2d beginPose = new Pose2d(60, -30, Math.toRadians(180)); for red
+        Pose2d beginPose = new Pose2d(-60, -36, 0); //Pose2d beginPose = new Pose2d(60, -30, Math.toRadians(180)); for red
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -165,47 +168,32 @@ public class TTRoadBlueFar extends LinearOpMode{
                 telemetry.addData("location?", blocks[i].x);// this gives you just x
                 //TODO ensure your x values of the husky lens are appropriate to the desired areas
                 //----------------------------1----------------------------\\
-                if (blocks[i].x < 100 && blocks[i].id ==2 && blocks[i].y <200) {
+                if (blocks[i].x < 100 && blocks[i].id ==2 && blocks[i].y < 200) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(StartPos())//sets up the arm
-                                    .waitSeconds(1)
-                                    .setTangent(0)
-                                    .splineTo(new Vector2d(-28,-30.3),Math.PI/2)//drive to spike mark
-                                    .stopAndAdd(openL())//score purple
+                                    .setTangent(180)
+                                    .stopAndAdd(StartPos())
+                                    .waitSeconds(1.5)
+                                    .splineTo((new Vector2d(-35,-35)), -1*PI/2)
+                                    .waitSeconds(0.5)
+                                    .stopAndAdd(openR())
+                                    .waitSeconds(5.5)
+                                    .stopAndAdd(closeR())
+                                    .lineToY(-48)
+                                    .splineTo((new Vector2d(-12, -48)), PI)
+                                    .waitSeconds(.25)
+                                    .lineToY(36)
+                                    .waitSeconds(.25)
+                                    .strafeTo(new Vector2d(-45, 48))
+                                    .waitSeconds(.25)
+                                    .stopAndAdd(openL())
                                     .waitSeconds(.5)
-                                    .lineToYLinearHeading(-38,Math.PI/2)//back up
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(GearUpLittle())
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(whitePixelPickup())
-                                    .splineTo(new Vector2d(-14, -48),Math.toRadians(270))//line up with white stack
-                                    .waitSeconds(.2)
-                                    .lineToYConstantHeading(-51.2)//forward into white
-                                    .waitSeconds(.2)
-                                    .stopAndAdd(closeL())//pick up white
-                                    .waitSeconds(.5)
-                                    .lineToY(-40)
-                                    .strafeTo(new Vector2d(-5,-40))//line up to go back
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(50)//drive to backboard
-                                    .strafeTo(new Vector2d(-31.8,55))//strafe to score
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(liftIn())
-                                    .stopAndAdd(scoringPos())
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(55.5)//back all the way up
-                                    .waitSeconds(2.4)
-                                    .stopAndAdd(openR())//score yellow
-                                    .waitSeconds(.5)
-                                    .strafeTo(new Vector2d(-27,55.5))
-                                    .waitSeconds(.5)
-                                    .stopAndAdd(openL())//score white
-                                    .waitSeconds(.5)
-                                    .lineToYConstantHeading(57)
+                                    .lineToY(43)
+                                    .stopAndAdd(closeL())
+                                    .waitSeconds(.1)
                                     .stopAndAdd(geardownTEST())
-                                    .stopAndAdd(liftIn())
-                                    .strafeTo(new Vector2d(-5, 57))//strafe to park
+                                    .waitSeconds(.5)
+                                    .stopAndAdd(GearROT0())
                                     .build());
                     sleep(400000);
 
@@ -213,48 +201,32 @@ public class TTRoadBlueFar extends LinearOpMode{
 
                 }
                 //----------------------------2----------------------------\\
-                if (blocks[i].x > 100 && blocks[i].x < 200 && blocks[i].id ==2 && blocks[i].y <200) {
+                if (blocks[i].x > 100 && blocks[i].x < 200 && blocks[i].id ==1 && blocks[i].y <200) {
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(StartPos())//sets up the arm
-                                    .waitSeconds(1)
-                                    .setTangent(0)
-                                    .strafeTo(new Vector2d(-37.4, -27))
-                                    .stopAndAdd(openL())//score purple
-                                    .strafeTo(new Vector2d(-50, -29))
-                                    .waitSeconds(.1)
-                                    .stopAndAdd(GearUpLittle())
-                                    .stopAndAdd(whitePixelPickup())
-                                    .splineTo(new Vector2d(-25, -48), Math.toRadians(270))//line up with white stack | x was 25.7
-                                    .lineToYConstantHeading(-49.75)
-                                    .stopAndAdd(closeL())//pick up white
-                                    .waitSeconds(.1)
-                                    .lineToY(-40)
-                                    .strafeTo(new Vector2d(-5, -40))//line up to go back
-                                    .waitSeconds(.1)
-                                    .lineToYConstantHeading(40)//forward a bit
-                                    .stopAndAdd(liftIn())
-                                    //.waitSeconds(.5)
-                                    .stopAndAdd(scoringPos())
-                                    .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-37.5, 48))//strafe to score white
-                                    .waitSeconds(.1)
-                                    .lineToYConstantHeading(55)//forward a bit
-                                    .waitSeconds(.1)
-                                    .stopAndAdd(openL())//score white
-                                    .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-27.6, 57)) //strafe to score yellow
-                                    .stopAndAdd(liftIn())
-                                    .waitSeconds(.3)
-                                    .stopAndAdd(openR())//score yellow
-                                    .waitSeconds(.1)
-                                    .stopAndAdd(liftIn())
-                                    .waitSeconds(.1)
-                                    .lineToYConstantHeading(55)
-                                    .stopAndAdd(liftIn())
-                                    .stopAndAdd(geardownTEST())
-                                    .strafeTo(new Vector2d(-6, 57))//strafe to park
-                                    .build());
+                            .stopAndAdd(StartPos())
+                            .waitSeconds(1)
+                            .lineToX(-56.5)
+                            .strafeTo(new Vector2d(-37.5, -36))
+                            .stopAndAdd(openR())
+                            .waitSeconds(.1)
+                            .stopAndAdd(closeR())
+                            .waitSeconds(.5)
+                            .lineToX(-12)
+                            .turn(-1*PI/2)
+                            .strafeTo(new Vector2d(-12, 48))
+                            .waitSeconds(.1)
+                            .strafeTo(new Vector2d(-29.5, 48))
+                            .stopAndAdd(openL())
+                            .waitSeconds(.25)
+                            .lineToY(40)
+                            .stopAndAdd(closeL())
+                            .stopAndAdd(liftIn2())
+                            .waitSeconds(.5)
+                            .stopAndAdd(geardownTEST())
+                            .waitSeconds(.5)
+                            .stopAndAdd(GearROT0())
+                            .build());
                     sleep(400000);
                 }
 
@@ -263,51 +235,60 @@ public class TTRoadBlueFar extends LinearOpMode{
 
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
-                                    .stopAndAdd(StartPos())//sets up the arm
-                                    .waitSeconds(1)
-                                    .strafeTo(new Vector2d(-35,-28.75))
-                                    .turnTo(Math.toRadians(270))
-                                    .stopAndAdd(openL())//score purple
-                                    .stopAndAdd(GearUpLittle())
-                                    .stopAndAdd(whitePixelPickup())
+                                    .stopAndAdd(StartPos())
+                                    .strafeTo(new Vector2d(-30, -58.5))
+                                    .waitSeconds(.5)
+                                    .turn(-1*PI)
+                                    .stopAndAdd(openR())
                                     .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-14.2,-28.75))
+                                    .stopAndAdd(closeR())
+                                    .waitSeconds(.5)
+                                    .strafeTo(new Vector2d(-12,-58.5))
                                     .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-14.2,-47))//line up with white stack
-                                    .lineToYConstantHeading(-48)//forward into white
-                                    .waitSeconds(.2)
-                                    .stopAndAdd(closeL())//pick up white
+                                    .turn(3*PI/2)
                                     .waitSeconds(.1)
-                                    .lineToY(-40)
-                                    .strafeTo(new Vector2d(-5,-40))
-                                    .strafeTo(new Vector2d(-5,38))//forward a bit
-                                    .stopAndAdd(liftIn())
-                                    .stopAndAdd(scoringPos())
+                                    .strafeTo(new Vector2d(-12,36))
                                     .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-36.5, 46))//strafe to score white
-                                    .waitSeconds(.1)
-                                    .lineToYConstantHeading(55)//forward a bit
-                                    .waitSeconds(.1)
-                                    .stopAndAdd(openL())//score white
-                                    .waitSeconds(.1)
-                                    .strafeTo(new Vector2d(-22.6, 57)) //strafe to score yellow
-                                    .stopAndAdd(liftIn())
-                                    .waitSeconds(.3)
-                                    .stopAndAdd(openR())//score yellow
-                                    .waitSeconds(.1)
-                                    .stopAndAdd(liftIn())
-                                    .waitSeconds(.1)
-                                    .lineToYConstantHeading(55)
+                                    .strafeTo(new Vector2d(-22, 48))
+                                    .waitSeconds(.5)
                                     .stopAndAdd(openL())
+                                    .waitSeconds(.25)
+                                    .lineToY(48)
+                                    .stopAndAdd(closeL())
+                                    .waitSeconds(.5)
                                     .stopAndAdd(geardownTEST())
-                                    .stopAndAdd(liftIn())
-                                    .strafeTo(new Vector2d(-4, 55))//strafe to park
+                                    .waitSeconds(1.5)
+                                    .stopAndAdd(GearROT0())
                                     .build());
                     sleep(400000);
                 }
 
             }
         }
+    }
+    public Action whitePixelPickup(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(WhitePixelPickUpClaw);
+                gearROT.setTargetPosition(140);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.5);
+                return false;
+            }
+        };
+    }
+    public Action whitePixelPickup2(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(WhitePixelPickUpClaw);
+                gearROT.setTargetPosition(140);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.5);
+                return false;
+            }
+        };
     }
     public Action liftExtend(){
         return new Action() {
@@ -355,8 +336,20 @@ public class TTRoadBlueFar extends LinearOpMode{
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 gearROT.setTargetPosition(75);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                gearROT.setPower(0.4);
+                gearROT.setPower(0.33);
                 clawrotate.setPosition(GroundClaw);
+                return false;
+            }
+        };
+    }
+    public Action EndingPos(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                gearROT.setTargetPosition(75);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.3);
+                clawrotate.setPosition(ScoringClaw);
                 return false;
             }
         };
@@ -365,7 +358,7 @@ public class TTRoadBlueFar extends LinearOpMode{
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                gearROT.setTargetPosition(150);
+                gearROT.setTargetPosition(190);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 gearROT.setPower(0.4);
                 clawrotate.setPosition(GroundClaw);
@@ -395,18 +388,6 @@ public class TTRoadBlueFar extends LinearOpMode{
         };
     }
 
-    public Action liftExtend2(){
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setTargetPosition(-200);
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                arm.setPower(1);
-                return false;
-            }
-        };
-    }
     public Action liftIn2(){
         return new Action() {
             @Override
@@ -420,16 +401,18 @@ public class TTRoadBlueFar extends LinearOpMode{
         };
     }
 
-    public Action groundclaw(){
+    public Action liftExtend2(){
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawrotate.setPosition(GroundClaw);
+                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                arm.setTargetPosition(-200);
+                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                arm.setPower(1);
                 return false;
             }
         };
     }
-
     public Action openR(){
         return new Action() {
             @Override
@@ -440,15 +423,6 @@ public class TTRoadBlueFar extends LinearOpMode{
         };
     }
 
-    public Action whitePixelPickup(){
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                clawrotate.setPosition(GroundClaw);
-                return false;
-            }
-        };
-    }
     public Action openL(){
         return new Action() {
             @Override
@@ -478,11 +452,22 @@ public class TTRoadBlueFar extends LinearOpMode{
             }
         };
     }
+    public Action scoringClaw(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(ScoringClaw);
+                return false;
+            }
+        };
+    }
+
 
     public Action scoringPos(){
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawright.setPosition(ClosedRight);
                 clawrotate.setPosition(ScoringClaw);
                 gearROT.setTargetPosition(630);
                 gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -491,5 +476,16 @@ public class TTRoadBlueFar extends LinearOpMode{
             }
         };
     }
-
+    public Action scoringPos1(){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                clawrotate.setPosition(ScoringClaw);
+                gearROT.setTargetPosition(670);
+                gearROT.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                gearROT.setPower(0.4);
+                return false;
+            }
+        };
+    }
 }

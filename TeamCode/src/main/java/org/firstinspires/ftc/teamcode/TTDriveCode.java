@@ -168,10 +168,9 @@ public class TTDriveCode extends LinearOpMode {
 
             //----------Claws & Claw Rotate----------//
 
-            if (gamepad2.right_trigger > 0.5) {
+            if (gamepad2.right_bumper) {
                 clawleft.setPosition(ClosedLeft);
                 clawright.setPosition(ClosedRight);
-                sleep(200);
                 raegPosition(50,0.33);
                 clawrotate.setPosition(ScoringClaw);
 
@@ -181,7 +180,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawright.setPosition(OpenRight);
                 clawleft.setPosition(OpenLeft);
             }
-            if(gamepad2.right_bumper){
+            if(gamepad2.right_trigger > 0.5){
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
             }
@@ -200,10 +199,7 @@ public class TTDriveCode extends LinearOpMode {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(GroundClaw);
-                tfilPosition(arm.getCurrentPosition()+200,1 );
-                sleep(400);
                 tfilPosition(0,1);
-                sleep(400);
                 raegPosition(0, 0.125);
             }
 
@@ -211,7 +207,6 @@ public class TTDriveCode extends LinearOpMode {
                 clawright.setPosition(ClosedRight);
                 clawleft.setPosition(ClosedLeft);
                 clawrotate.setPosition(ScoringClaw);
-                sleep(400);
                 raegPosition(610, 0.33);
             }
 
@@ -233,10 +228,10 @@ public class TTDriveCode extends LinearOpMode {
             }
 
             if (bspeed == 2) {
-                lfspeed = leftFrontPower/1.25;
-                rfspeed = rightFrontPower/1.25;
-                lbspeed = leftBackPower/1.25;
-                rbspeed = rightBackPower/1.25;
+                lfspeed = leftFrontPower/1.2;
+                rfspeed = rightFrontPower/1.2;
+                lbspeed = leftBackPower/1.2;
+                rbspeed = rightBackPower/1.2;
             }
 
             leftFrontDrive.setPower(lfspeed);
@@ -259,7 +254,7 @@ public class TTDriveCode extends LinearOpMode {
     }
     public void tfil (int s) {
         arm.setPower(1);
-        arm.setTargetPosition(arm.getCurrentPosition() + 100 * s);
+        arm.setTargetPosition(arm.getCurrentPosition() + 150 * s);
     }
     public void fasttfil (int s) {
         arm.setPower(1);
