@@ -34,8 +34,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="TTDriveCode", group="Linear Opmode")
-public class TTDriveCode extends LinearOpMode {
+@TeleOp(name="TDDriveCode", group="Linear Opmode")
+public class TDDriveCode extends LinearOpMode {
 
     //---------------Declare Hardware Variables-----------------------//
     private ElapsedTime runtime = new ElapsedTime();
@@ -64,6 +64,9 @@ public class TTDriveCode extends LinearOpMode {
     double OpenRight = 0;
     double GroundClaw = 0.1175;
     double ScoringClaw = 0.69;
+
+    boolean leftPosition = false;
+    boolean rightPosition = false;
 
     //---------------Run OpMode-----------------------------//
     @Override
@@ -137,86 +140,88 @@ public class TTDriveCode extends LinearOpMode {
                 raeg(-1);
             }
 
-            if (gamepad2.a)
+            if (gamepad2.right_trigger >= 0.1)
             {
-              tfil(-1);
+                tfil(-1);
             }
 
-            if (gamepad2.b)
+            if (gamepad2.left_trigger >= 0.1)
             {
                 tfil(1);
             }
 
             //Must be pressed before start of match
-            if (gamepad1.x)
+            if (gamepad2.a)
             {
-                gearROT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            }
-            if(gamepad2.x){
                 clawrotate.setPosition(GroundClaw);
+                tfilPosition(0,1);
+                raegPosition(0, 0.125);
             }
-
             //---------Airplane----------//
 
-            if (gamepad1.y) {
+            if (gamepad1.y)
+            {
                 airplane.setPosition(0.5);
             } else {
                 airplane.setPosition(0.1);
             }
 
             //----------Claws & Claw Rotate----------//
-
-            if (gamepad2.right_bumper) {
+            if (gamepad2.left_bumper)
+            {
                 clawleft.setPosition(ClosedLeft);
-                clawright.setPosition(ClosedRight);
-                raegPosition(50,0.33);
-                clawrotate.setPosition(ScoringClaw);
-
             }
-
-            if (gamepad2.left_trigger > 0.5) {
-                clawright.setPosition(OpenRight);
+            else
+            {
                 clawleft.setPosition(OpenLeft);
             }
-            if(gamepad2.right_trigger > 0.5){
+            if(gamepad2.right_bumper)
+            {
                 clawright.setPosition(ClosedRight);
-                clawleft.setPosition(ClosedLeft);
+            }
+            else
+            {
+                clawright.setPosition(OpenRight);
             }
 
             //Below are weird due to manual control whilst we score backwards
-            if(gamepad2.dpad_right) {
-                clawleft.setPosition(OpenLeft);
+            if(gamepad2.dpad_right)
+            {
+                clawrotate.setPosition(GroundClaw);
             }
-            if(gamepad2.dpad_left) {
-                clawright.setPosition(OpenRight);
+            if(gamepad2.dpad_left)
+            {
+                clawrotate.setPosition(ScoringClaw);
             }
 
             //--------------Arm-Presets---------------//
 
-            if(gamepad2.right_stick_button){
-                clawright.setPosition(ClosedRight);
-                clawleft.setPosition(ClosedLeft);
+            if(gamepad2.b){
                 clawrotate.setPosition(GroundClaw);
                 tfilPosition(0,1);
-                raegPosition(0, 0.125);
+                raegPosition(750, 0.33);
             }
 
-            if(gamepad2.left_stick_button){
-                clawright.setPosition(ClosedRight);
-                clawleft.setPosition(ClosedLeft);
+            if(gamepad2.y){
                 clawrotate.setPosition(ScoringClaw);
-                raegPosition(610, 0.33);
+                tfilPosition(500,1);
+                raegPosition(750, 0.33);
+            }
+
+            if(gamepad2.x){
+                clawrotate.setPosition(ScoringClaw);
+                tfilPosition(200,1);
+                raegPosition(750, 0.33);
             }
 
             //-----------Speed Control------------//
 
             if (gamepad1.left_bumper) {
-                bspeed = 1;
+                bspeed = 2;
             }
 
             if (gamepad1.right_bumper) {
-                bspeed = 2;
+                bspeed = 1;
             }
 
             if (bspeed == 1) {
