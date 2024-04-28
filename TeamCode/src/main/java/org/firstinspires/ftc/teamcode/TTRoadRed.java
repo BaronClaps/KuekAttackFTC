@@ -131,7 +131,7 @@ public class TTRoadRed extends LinearOpMode{
 
     //-------------------Camera Initialization---------------------------//
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private static int DESIRED_TAG_ID = 0;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -202,7 +202,7 @@ public class TTRoadRed extends LinearOpMode{
                 // Look to see if we have size info on this tag.
                 if (detection.metadata != null) {
                     //  Check to see if we want to track towards this tag.
-                    if ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID)) {
+                    if ((detection.id == DESIRED_TAG_ID)) {
                         // Yes, we want to use this tag.
                         targetFound = true;
                         desiredTag = detection;
@@ -219,7 +219,6 @@ public class TTRoadRed extends LinearOpMode{
 
             // Tell the driver what we see, and what to do.
             if (targetFound) {
-                telemetry.addData("\n>","HOLD Left-Bumper to Drive to Target\n");
                 telemetry.addData("Found", "ID %d (%s)", desiredTag.id, desiredTag.metadata.name);
                 telemetry.addData("Range",  "%5.1f inches", desiredTag.ftcPose.range);
                 telemetry.addData("Bearing","%3.0f degrees", desiredTag.ftcPose.bearing);
@@ -245,20 +244,19 @@ public class TTRoadRed extends LinearOpMode{
             }
             telemetry.update();
 
-            // Apply desired axes motions to the drivetrain.
             if (!rateLimit.hasExpired()) {
                 continue;
             }
+
             rateLimit.reset();// from huskylens
             HuskyLens.Block[] blocks = huskyLens.blocks();
             telemetry.addData("Block count", blocks.length);
             for (int i = 0; i < blocks.length; i++) {
                 telemetry.addData("Block", blocks[i].toString());// this gives you the data
                 telemetry.addData("location?", blocks[i].x);// this gives you just x
-                //TODO ensure your x values of the husky lens are appropriate to the desired areas
-
                 //----------------------------1----------------------------\\
                 if (blocks[i].x < 90 && blocks[i].id == 1) {
+                    DESIRED_TAG_ID = 1;
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
@@ -291,6 +289,7 @@ public class TTRoadRed extends LinearOpMode{
 
                 //----------------------------2----------------------------\\
                 if (blocks[i].x > 90 && blocks[i].x < 180 && blocks[i].id == 1) {
+                    DESIRED_TAG_ID = 2;
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
@@ -322,6 +321,7 @@ public class TTRoadRed extends LinearOpMode{
                 }
                 //----------------------------3----------------------------\\
                 if (blocks[i].x > 180 && blocks[i].id == 1) {
+                    DESIRED_TAG_ID = 3;
                     Actions.runBlocking(
                             drive.actionBuilder(beginPose)
                                     .stopAndAdd(StartPos())
