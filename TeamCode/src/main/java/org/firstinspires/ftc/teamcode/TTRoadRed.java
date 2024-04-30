@@ -105,8 +105,7 @@ public class TTRoadRed extends LinearOpMode{
     private Servo clawright = null; //es2
     private DcMotor gearROT = null;
 
-    //---------------Declare Variables-----------------------//
-    private double armR;
+
     //---------------Declare Servo Variables-----------------//
     double ClosedLeft = 0.03;
     double ClosedRight = 0.145;

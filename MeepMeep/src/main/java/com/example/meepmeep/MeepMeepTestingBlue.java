@@ -18,16 +18,14 @@ public class MeepMeepTestingBlue {
                 .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 1408.3621921992083)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(12, 61, PI *3/2))
-                .lineToYConstantHeading(40)
-                .turn(-1*PI/3)
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(11.8, 61.7, Math.toRadians(90)))
 
-                .turn(PI/2+PI/3)
 
-                .strafeToConstantHeading(new Vector2d(48,30))
 
-                .lineToXConstantHeading(40)
-                .strafeToConstantHeading((new Vector2d(50,60)))
+                .strafeToConstantHeading(new Vector2d(23.37, -38.95))
+                .strafeToConstantHeading(new Vector2d(49, -42.01))
+
+
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
